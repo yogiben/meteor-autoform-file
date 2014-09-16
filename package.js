@@ -11,7 +11,8 @@ Package.onUse(function(api) {
     [
     'coffeescript',
     'underscore',
-    'templating'
+    'templating',
+    'less'
     ],
     'client');
 
