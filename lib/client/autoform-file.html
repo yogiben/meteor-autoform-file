@@ -1,0 +1,30 @@
+<template name="afFileUpload">
+		<!-- <div class="form-group file-upload invisible"> -->
+		<div class="form-group file-upload">
+			{{>afFieldLabel name=name}}
+			<br/>
+			{{#if fileUpload name collection label}}
+			{{#with fileUpload name collection label}}
+				{{> UI.dynamic template=template data=data}}
+			{{/with}}
+			<br/>
+			<a class="file-upload-clear" file-input="{{name}}"><i class="fa fa-times"></i> Remove</a>
+			{{else}}
+			<label for="file-{{name}}" class="btn btn-default">
+				Choose file
+				<input class="hidden" id="file-{{name}}" file-input="{{name}}" collection="{{collection}}" type="file" />
+			</label>
+			{{/if}}
+			<div class="">{{> afQuickField name=name}}</div>
+		</div>
+</template>
+
+<template name="fileThumbIcon">
+	<a class="btn btn-default" target="_blank">
+		<i class="fa fa-{{icon}}"></i> {{src}}
+	</a>
+</template>
+
+<template name="fileThumbImg">
+	<img src="{{src}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">
+</template>
