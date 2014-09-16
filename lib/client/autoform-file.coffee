@@ -74,11 +74,9 @@ Template.afFileUpload.helpers
 			src = window[collection].findOne({_id:file}).url()
 			obj = 
 				template: getTemplate(filename)
-				# template: getTemplate()
 				data:
-					src: label
-					icon: 'file-o'
-					# icon: getIcon(filename)
+					src: src
+					icon: getIcon(filename)
 			obj
 	fileUploadSelected: (name)->
 		Session.get 'fileUploadSelected['+name+']'
