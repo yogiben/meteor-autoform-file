@@ -1,6 +1,9 @@
 Autofom File
 =============
 
+To do:
+* Integrate `cfs:ui`
+
 Upload and manage files with #autoForm.
 
 Examples written in coffeescript and make for an insecure app; anyone can upload / download any file.
