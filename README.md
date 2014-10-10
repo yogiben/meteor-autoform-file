@@ -1,4 +1,4 @@
-Autofom File
+Autoform File
 =============
 
 To do:
