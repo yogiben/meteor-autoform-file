@@ -1,5 +1,8 @@
-Autofom File
+Autoform File
 =============
+
+To do:
+* Integrate `cfs:ui`
 
 Upload and manage files with #autoForm.
 
