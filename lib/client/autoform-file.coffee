@@ -33,20 +33,14 @@ getTemplate = (file)->
 		template = 'fileThumbImg'
 	template
 
-refreshFileSelect = (name)->
-
 Template.afFileUpload.rendered = () ->
-	Session.set 'fileUpload['+name+']', $('input[name="' + name + '"]').val()
-	name = this.data.name
-	callback = ->
-		Session.set 'fileUpload['+name+']', $('input[name="' + name + '"]').val()
-		$('.file-upload').removeClass 'invisible'
-	setTimeout callback, 10
+	doc = Template.parentData(1)._af.doc
+	data = Template.currentData()
 
 
 Template.afFileUpload.destroyed = () ->
-	name = this.data.name
-	Session.set 'fileUpload['+name+']', ''
+	name = @data.name
+	Session.set 'fileUpload['+name+']', null
 
 Template.afFileUpload.events
 	"change .file-upload": (e, t) ->
@@ -63,15 +57,31 @@ Template.afFileUpload.events
 	'click .file-upload-clear': (e,t)->
 		name = $(e.currentTarget).attr('file-input')
 		$('input[name="' + name + '"]').val('')
-		Session.set 'fileUpload['+name+']', ''
+		Session.set 'fileUpload['+name+']', 'delete-file'
 
 Template.afFileUpload.helpers
-	fileUpload: (name,collection,label) ->
-		file = Session.get 'fileUpload['+name+']'
+	fileUpload: (name,collection) ->
+		doc = Template.parentData(1)._af.doc
+
+		if Session.equals('fileUpload['+name+']', 'delete-file')
+			return null
+		else if Session.get('fileUpload['+name+']')
+			file = Session.get('fileUpload['+name+']')
+		else
+			if name.indexOf('.') > -1
+				name = name.split('.')
+				file = doc[name[0]]?[name[1]]
+			else
+				file = doc[name]
+
 		if file != '' && file
-			doc = window[collection].findOne({_id:file})
-			filename = window[collection].findOne({_id:file}).name()
-			src = window[collection].findOne({_id:file}).url()
+			if file.length == 17
+				doc = window[collection].findOne({_id:file})
+				filename = window[collection].findOne({_id:file}).name()
+				src = window[collection].findOne({_id:file}).url()
+			else
+				filename = file
+				src = filename
 			obj = 
 				template: getTemplate(filename)
 				data:
@@ -80,3 +90,21 @@ Template.afFileUpload.helpers
 			obj
 	fileUploadSelected: (name)->
 		Session.get 'fileUploadSelected['+name+']'
+	isUploaded: (name,collection) ->
+		file = Session.get 'fileUpload['+name+']'
+		isUploaded = false
+		if file && file.length == 17
+			doc = window[collection].findOne({_id:file})
+			isUploaded = doc.isUploaded()
+		else
+			isUploaded = true
+		isUploaded
+
+	getFileByName: (name,collection)->
+		file = Session.get 'fileUpload['+name+']'
+		if file && file.length == 17
+			doc = window[collection].findOne({_id:file})
+			console.log doc
+			doc
+		else
+			null
