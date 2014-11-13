@@ -1,7 +1,7 @@
 <template name="afFileUpload">
 		<!-- <div class="form-group file-upload invisible"> -->
 		<div class="form-group file-upload">
-			{{>afFieldLabel name=name}}
+			<label>{{afFieldLabelText name=name}}</label>
 			<br/>
 			{{#if fileUpload name collection label}}
 			{{#with fileUpload name collection label}}

@@ -5,14 +5,15 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('METEOR@0.9.1.1');
+  api.versionsFrom('METEOR@1.0');
 
   api.use(
     [
     'coffeescript',
     'underscore',
     'templating',
-    'less'
+    'less',
+    'aldeed:autoform@4.0.2'
     ],
     'client');
 
