@@ -78,6 +78,12 @@ Template.afFileUpload.events
 		Session.set 'fileUpload['+name+']', 'delete-file'
 
 Template.afFileUpload.helpers
+	collection: ->
+		@.atts.collection
+	fileUploadAtts: ->
+		atts = _.clone(this.atts)
+		delete atts.collection
+		atts
 	fileUpload: (name,collection) ->
 		af = Template.parentData(1)._af
 
