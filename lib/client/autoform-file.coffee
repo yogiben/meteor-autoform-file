@@ -84,8 +84,12 @@ Template.afFileUpload.helpers
 		atts = _.clone(this.atts)
 		delete atts.collection
 		atts
-	fileUpload: (name,collection) ->
+	fileUpload: ->
 		af = Template.parentData(1)._af
+		# Template.parentData(4).value
+
+		name = @atts.name
+		collection = @atts.collection
 
 		if af &&  af.submitType == 'insert'
 			doc = af.doc
@@ -94,12 +98,8 @@ Template.afFileUpload.helpers
 			return null
 		else if Session.get('fileUpload['+name+']')
 			file = Session.get('fileUpload['+name+']')
-		else if doc
-			if name.indexOf('.') > -1
-				name = name.split('.')
-				file = doc[name[0]]?[name[1]]
-			else
-				file = doc[name]
+		else if Template.parentData(4).value
+			file = Template.parentData(4).value
 		else
 			return null
 
@@ -111,6 +111,7 @@ Template.afFileUpload.helpers
 			else
 				filename = file
 				src = filename
+		if filename
 			obj = 
 				template: getTemplate(filename)
 				data:
