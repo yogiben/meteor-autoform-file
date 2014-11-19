@@ -3,6 +3,8 @@ Autoform File
 
 Upload and manage files with autoForm.
 
+![Meteor autoform file](https://raw.githubusercontent.com/yogiben/meteor-autoform-file/master/readme/1.png)
+
 **App broken?** This package has recently undergone some app-breaking changes in light of autoform's recent updates. To fix, define your schema as in the tutorial below and replace your `afFileUpload` templates with `afQuickField`. Sorry for any inconvenience caused.
 
 ###Setup###
