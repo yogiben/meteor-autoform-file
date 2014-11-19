@@ -1,13 +1,11 @@
 Autoform File
 =============
 
-To do:
-* Integrate `cfs:ui`
+Upload and manage files with autoForm.
 
-Upload and manage files with #autoForm.
+**App broken?** This package has recently undergone some app-breaking changes in light of autoform's recent updates. To fix, define your schema as in the tutorial below and replace your `afFileUpload` templates with `afQuickField`. Sorry for any inconvenience caused.
 
-Examples written in coffeescript and make for an insecure app; anyone can upload / download any file.
-
+###Setup###
 1) Install `meteor add yogiben:autoform-file`
 
 2) Create your collectionFS (See [collectionFS](https://github.com/CollectionFS/Meteor-CollectionFS))
@@ -16,12 +14,10 @@ Examples written in coffeescript and make for an insecure app; anyone can upload
   stores: [new FS.Store.GridFS("images", {})]
 )
 ```
-3) Make sure the correct allow rules & subscriptions are set up
+3) Make sure the correct allow rules & subscriptions are set up on the collectionFS
 ```
 Images.allow
   insert: (userId, doc) ->
-    true
-  update: (userId, doc, fieldNames, modifier) ->
     true
   download: (userId)->
     true
@@ -39,15 +35,44 @@ and in your router.coffee
         Meteor.subscribe 'images'
       ]
 ```
-4) Create an autoForm template
+4) Define your schema and set the `autoform` property like in the example below
 ```
-{{#autoForm id="profilePicture" type='update' collection=Users doc=User}}
-  {{> afFileUpload name="profile.profilePicture" collection='Images'}}
-	<button type="submit" class="btn btn-primary">Update</button>
+Schemas = {}
+
+@Posts = new Meteor.Collection('posts');
+
+Schemas.Posts = new SimpleSchema
+	title:
+		type:String
+		max: 60
+		
+	picture:
+		type: String
+		autoform:
+			afFieldInput:
+				type: 'fileUpload'
+				collection: 'Images'
+
+Posts.attachSchema(Schemas.Posts)
+```
+
+The `collection` property is the field name of your collectionFS.
+
+5) Generate the form with `{{> quickform}}` or `{{#autoform}}`
+
+e.g.
+```
+{{> quickForm collection="Posts" type="insert"}}
+```
+
+or
+
+```
+{{#autoForm collection="Posts" type="insert"}}
+{{> afQuickField name="title"}}
+{{> afQuickField name="picture"}}
+<button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
-The `afFieldUpload` is the first part of this tutorial unique to this package.
-
-The `name` property is the field name as per your [collection2](https://github.com/aldeed/meteor-collection2) schema.
-
-The `collection` is the name of your FS.Collection.
+###Security & optimization###
+The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
