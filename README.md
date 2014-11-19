@@ -1,13 +1,8 @@
 Autoform File
 =============
 
-To do:
-* Integrate `cfs:ui`
-
-Upload and manage files with #autoForm.
-
-Examples written in coffeescript and make for an insecure app; anyone can upload / download any file.
-
+Upload and manage files with autoForm.
+###Setup###
 1) Install `meteor add yogiben:autoform-file`
 
 2) Create your collectionFS (See [collectionFS](https://github.com/CollectionFS/Meteor-CollectionFS))
@@ -20,8 +15,6 @@ Examples written in coffeescript and make for an insecure app; anyone can upload
 ```
 Images.allow
   insert: (userId, doc) ->
-    true
-  update: (userId, doc, fieldNames, modifier) ->
     true
   download: (userId)->
     true
@@ -77,3 +70,6 @@ or
 {{> afQuickField name="picture"}}
 <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
+```
+###Security & optimization###
+The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
