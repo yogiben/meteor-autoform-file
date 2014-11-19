@@ -1,7 +1,5 @@
 <template name="afFileUpload">
 		<div class="form-group file-upload">
-			<label>{{afFieldLabelText name=name}}</label>
-			<br/>
 			{{#if fileUpload name collection label}}
 			{{#with fileUpload name collection label}}
 				{{> UI.dynamic template=template data=data}}
@@ -14,7 +12,8 @@
 				<input class="hidden" id="file-{{name}}" file-input="{{name}}" collection="{{collection}}" type="file" />
 			</label>
 			{{/if}}
-			<div class="">{{> afQuickField name=name}}</div>
+			<!-- <div class="">{{> afQuickField name=name}}</div> -->
+			<input type="text" style="display:none;" data-cfs-collection="{{this.atts.collection}}" {{fileUploadAtts}}>
 		</div>
 </template>
 
