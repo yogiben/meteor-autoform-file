@@ -27,6 +27,8 @@ getIcon = (file)->
 		icon = 'file-powerpoint-o'
 	else if file.indexOf('.avi') > -1 || file.indexOf('.mov') > -1 || file.indexOf('.mp4') > -1
 		icon = 'file-movie-o'
+	else if file.indexOf('.png') > -1 || file.indexOf('.jpg') > -1 || file.indexOf('.gif') > -1 || file.indexOf('.bmp') > -1
+		icon = 'file-image-o'
 	else if file.indexOf('http://') > -1 || file.indexOf('https://') > -1
 		icon = 'link'
 	icon
@@ -108,6 +110,15 @@ Template.afFileUpload.helpers
 				if window[collection].findOne({_id:file})
 					filename = window[collection].findOne({_id:file}).name()
 					src = window[collection].findOne({_id:file}).url()
+				else
+					# No subscription
+					filename = Session.get 'fileUploadSelected[' + name + ']'
+					obj =
+						template: 'fileThumbIcon'
+						data:
+							src: filename
+							icon: getIcon filename
+					return obj
 			else
 				filename = file
 				src = filename
