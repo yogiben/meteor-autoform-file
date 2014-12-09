@@ -34,6 +34,7 @@ getIcon = (file)->
 	icon
 
 getTemplate = (file)->
+	file = file.toLowerCase()
 	template = 'fileThumbIcon'
 	if file.indexOf('.jpg') > -1 || file.indexOf('.png') > -1 || file.indexOf('.gif') > -1
 		template = 'fileThumbImg'
