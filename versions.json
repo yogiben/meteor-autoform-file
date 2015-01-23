@@ -2,7 +2,7 @@
   "dependencies": [
     [
       "aldeed:autoform",
-      "4.0.7"
+      "4.2.2"
     ],
     [
       "aldeed:simple-schema",
@@ -77,8 +77,8 @@
       "1.0.5"
     ],
     [
-      "mrt:moment",
-      "2.8.1"
+      "momentjs:moment",
+      "2.8.4"
     ],
     [
       "observe-sequence",
