@@ -56,6 +56,9 @@ AutoForm.addHooks null,
 	onSuccess: ->
 		clearFilesFromSession()
 
+Template.afFileUpload.rendered = ->
+	if typeof @data.atts.collection == 'string'
+		@data.atts.collection = FS._collections[@data.atts.collection] or window[@data.atts.collection]
 
 Template.afFileUpload.destroyed = () ->
 	name = @data.name
@@ -64,8 +67,8 @@ Template.afFileUpload.destroyed = () ->
 Template.afFileUpload.events
 	"change .file-upload": (e, t) ->
 		files = e.target.files
-		collection = $(e.target).attr('collection')
-		window[collection].insert files[0], (err, fileObj) ->
+		collection = t.data.atts.collection
+		collection.insert files[0], (err, fileObj) ->
 			if err
 				console.log err
 			else
@@ -109,9 +112,9 @@ Template.afFileUpload.helpers
 
 		if file != '' && file
 			if file.length == 17
-				if window[collection].findOne({_id:file})
-					filename = window[collection].findOne({_id:file}).name()
-					src = window[collection].findOne({_id:file}).url()
+				if collection.findOne({_id:file})
+					filename = collection.findOne({_id:file}).name()
+					src = collection.findOne({_id:file}).url()
 				else
 					# No subscription
 					filename = Session.get 'fileUploadSelected[' + name + ']'
