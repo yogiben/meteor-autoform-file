@@ -41,52 +41,49 @@ getTemplate = (file)->
 		template = 'fileThumbImg'
 	template
 
-# Template.afFileUpload.rendered = () ->
-# 	doc = Template.parentData(1)._af.doc
-# 	data = Template.currentData()
-
-
 clearFilesFromSession = ->
 	_.each Session.keys, (value, key, index)->
 		if key.indexOf('fileUpload') > -1
 			Session.set key, ''
 
+getCollection = (context) ->
+  if typeof context.atts.collection == 'string'
+    context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
+  return context.atts.collection
 
 AutoForm.addHooks null,
 	onSuccess: ->
 		clearFilesFromSession()
-
-Template.afFileUpload.rendered = ->
-	if typeof @data.atts.collection == 'string'
-		@data.atts.collection = FS._collections[@data.atts.collection] or window[@data.atts.collection]
-
+    
 Template.afFileUpload.destroyed = () ->
 	name = @data.name
 	Session.set 'fileUpload['+name+']', null
 
-Template.afFileUpload.events
-	"change .file-upload": (e, t) ->
-		files = e.target.files
-		collection = t.data.atts.collection
-		collection.insert files[0], (err, fileObj) ->
-			if err
-				console.log err
-			else
-				name = $(e.target).attr('file-input')
-				# console.log $(e.target)
-				# console.log fileObj
-				$('input[name="'+name+'"]').val(fileObj._id)
-				Session.set 'fileUploadSelected['+name+']', files[0].name
-				# console.log fileObj
-				refreshFileInput name
-	'click .file-upload-clear': (e,t)->
-		name = $(e.currentTarget).attr('file-input')
-		$('input[name="' + name + '"]').val('')
-		Session.set 'fileUpload['+name+']', 'delete-file'
+Template.afFileUpload.events {
+  "change .file-upload": (e, t) ->
+    files = e.target.files
+    
+    collection = getCollection(t.data)
+    collection.insert files[0], (err, fileObj) ->
+      if err
+        console.log err
+      else
+        name = $(e.target).attr('file-input')
+        # console.log $(e.target)
+        # console.log fileObj
+        $('input[name="' + name + '"]').val(fileObj._id)
+        Session.set 'fileUploadSelected[' + name + ']', files[0].name
+        # console.log fileObj
+        refreshFileInput name
+  'click .file-upload-clear': (e, t)->
+    name = $(e.currentTarget).attr('file-input')
+    $('input[name="' + name + '"]').val('')
+    Session.set 'fileUpload[' + name + ']', 'delete-file'
+}
 
 Template.afFileUpload.helpers
 	collection: ->
-		@.atts.collection
+		getCollection(@)
 	label: ->
 		@atts.label or 'Choose file'
 	fileUploadAtts: ->
@@ -98,7 +95,7 @@ Template.afFileUpload.helpers
 		# Template.parentData(4).value
 
 		name = @atts.name
-		collection = @atts.collection
+		collection = getCollection(@)
 
 		if af &&  af.submitType == 'insert'
 			doc = af.doc
