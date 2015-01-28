@@ -47,39 +47,38 @@ clearFilesFromSession = ->
 			Session.set key, ''
 
 getCollection = (context) ->
-  if typeof context.atts.collection == 'string'
-    context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
-  return context.atts.collection
+	if typeof context.atts.collection == 'string'
+		context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
+	return context.atts.collection
 
 AutoForm.addHooks null,
 	onSuccess: ->
 		clearFilesFromSession()
-    
+
 Template.afFileUpload.destroyed = () ->
 	name = @data.name
 	Session.set 'fileUpload['+name+']', null
 
-Template.afFileUpload.events {
-  "change .file-upload": (e, t) ->
-    files = e.target.files
-    
-    collection = getCollection(t.data)
-    collection.insert files[0], (err, fileObj) ->
-      if err
-        console.log err
-      else
-        name = $(e.target).attr('file-input')
-        # console.log $(e.target)
-        # console.log fileObj
-        $('input[name="' + name + '"]').val(fileObj._id)
-        Session.set 'fileUploadSelected[' + name + ']', files[0].name
-        # console.log fileObj
-        refreshFileInput name
-  'click .file-upload-clear': (e, t)->
-    name = $(e.currentTarget).attr('file-input')
-    $('input[name="' + name + '"]').val('')
-    Session.set 'fileUpload[' + name + ']', 'delete-file'
-}
+Template.afFileUpload.events
+	"change .file-upload": (e, t) ->
+		files = e.target.files
+
+		collection = getCollection(t.data)
+		collection.insert files[0], (err, fileObj) ->
+			if err
+				console.log err
+			else
+				name = $(e.target).attr('file-input')
+				# console.log $(e.target)
+				# console.log fileObj
+				$('input[name="' + name + '"]').val(fileObj._id)
+				Session.set 'fileUploadSelected[' + name + ']', files[0].name
+				# console.log fileObj
+				refreshFileInput name
+	'click .file-upload-clear': (e, t)->
+		name = $(e.currentTarget).attr('file-input')
+		$('input[name="' + name + '"]').val('')
+		Session.set 'fileUpload[' + name + ']', 'delete-file'
 
 Template.afFileUpload.helpers
 	collection: ->
