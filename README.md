@@ -54,6 +54,7 @@ Schemas.Posts = new SimpleSchema
 			afFieldInput:
 				type: 'fileUpload'
 				collection: 'Images'
+        label: 'Choose file' # optional
 
 Posts.attachSchema(Schemas.Posts)
 ```

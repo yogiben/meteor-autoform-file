@@ -13,7 +13,7 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'less',
-    'aldeed:autoform@4.0.2'
+    'aldeed:autoform@4.2.2'
     ],
     'client');
 
