@@ -1,13 +1,12 @@
 Autoform File
 =============
 
+### Description ###
 Upload and manage files with autoForm.
 
 ![Meteor autoform file](https://raw.githubusercontent.com/yogiben/meteor-autoform-file/master/readme/1.png)
 
-**App broken?** This package has recently undergone some app-breaking changes in light of autoform's recent updates. To fix, define your schema as in the tutorial below and replace your `afFileUpload` templates with `afQuickField`. Sorry for any inconvenience caused.
-
-###Setup###
+### Quick Start ###
 1) Install `meteor add yogiben:autoform-file`
 
 2) Create your collectionFS (See [collectionFS](https://github.com/CollectionFS/Meteor-CollectionFS))
