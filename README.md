@@ -78,3 +78,11 @@ or
 ```
 ###Security & optimization###
 The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
+
+### Customization ###
+You can customize the button / remove text.
+
+Defaults:
+```
+{{> afFieldInput name="picture" label="Choose file" remove-label="Remove"}}
+```
