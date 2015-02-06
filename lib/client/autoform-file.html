@@ -5,7 +5,7 @@
 				{{> Template.dynamic template=template data=data}}
 			{{/with}}
 			<br/>
-			<a class="file-upload-clear" file-input="{{name}}"><i class="fa fa-times"></i> Remove</a>
+			<a class="file-upload-clear" file-input="{{name}}"><i class="fa fa-times"></i> {{removeLabel}}</a>
 			{{else}}
 			<label for="file-{{name}}" class="btn btn-default">
 				{{label}}

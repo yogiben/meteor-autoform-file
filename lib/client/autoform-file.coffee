@@ -89,6 +89,8 @@ Template.afFileUpload.helpers
 		@.atts.collection
 	label: ->
 		@atts.label or 'Choose file'
+	removeLabel: ->
+		@atts['remove-label'] or 'Remove'
 	fileUploadAtts: ->
 		atts = _.clone(this.atts)
 		delete atts.collection
