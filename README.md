@@ -76,6 +76,26 @@ or
 <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
+
+###Multiple images###
+If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
+
+```
+Schemas.Posts = new SimpleSchema
+	title:
+		type:String
+		max: 60
+		
+	pictures:
+		type: [String]
+                label: 'Choose file' # optional
+        "pctures.$":
+                autoform:
+                        afFieldInput:
+                                type: 'fileUpload',
+                                collection: 'Images'
+```
+
 ###Security & optimization###
 The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
 
