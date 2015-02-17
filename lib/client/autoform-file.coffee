@@ -101,12 +101,13 @@ Template.afFileUpload.helpers
 		if af &&  af.submitType == 'insert'
 			doc = af.doc
 
+		parentData = Template.parentData(0).value or Template.parentData(4).value
 		if Session.equals('fileUpload['+name+']', 'delete-file')
 			return null
 		else if Session.get('fileUpload['+name+']')
 			file = Session.get('fileUpload['+name+']')
-		else if Template.parentData(4).value
-			file = Template.parentData(4).value
+		else if parentData
+			file = parentData
 		else
 			return null
 
@@ -128,7 +129,7 @@ Template.afFileUpload.helpers
 				filename = file
 				src = filename
 		if filename
-			obj = 
+			obj =
 				template: getTemplate(filename)
 				data:
 					src: src
