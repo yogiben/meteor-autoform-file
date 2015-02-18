@@ -114,7 +114,7 @@ Template.afFileUpload.helpers
 		if file != '' && file
 			if file.length == 17
 				if collection.findOne({_id:file})
-					filename = collection.findOne({_id:file}).original.name
+					filename = collection.findOne({_id:file}).name()
 					src = collection.findOne({_id:file}).url()
 				else
 					# No subscription
