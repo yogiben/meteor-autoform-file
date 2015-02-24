@@ -104,7 +104,7 @@ Template.afFileUpload.helpers
 		parentData = Template.parentData(0).value or Template.parentData(4).value
 		if Session.equals('fileUpload['+name+']', 'delete-file')
 			return null
-		else if Session.get('fileUpload['+name+']')
+		else if !!Session.get('fileUpload['+name+']')
 			file = Session.get('fileUpload['+name+']')
 		else if parentData
 			file = parentData
@@ -122,7 +122,7 @@ Template.afFileUpload.helpers
 					obj =
 						template: 'fileThumbIcon'
 						data:
-							src: filename
+							filename: filename
 							icon: getIcon filename
 					return obj
 			else
