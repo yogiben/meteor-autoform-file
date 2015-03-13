@@ -2,7 +2,7 @@ Package.describe({
   name: "yogiben:autoform-file",
   summary: "File upload for AutoForm",
   description: "File upload for AutoForm",
-  version: "0.2.0",
+  version: "0.2.1",
   git: "http://github.com/yogiben/autoform-file.git"
 });
 
@@ -11,15 +11,14 @@ Package.onUse(function(api) {
 
   api.use(
     [
-    'coffeescript',
-    'underscore',
-    'templating',
-    'less',
-    'aldeed:autoform@4.2.2'
-    ],
-    'client');
+      'coffeescript',
+      'underscore',
+      'templating',
+      'less',
+      'aldeed:autoform@5.0.0'
+    ], 'client');
 
-  api.add_files('lib/client/autoform-file.html', 'client');
-  api.add_files('lib/client/autoform-file.less', 'client');
-  api.add_files('lib/client/autoform-file.coffee', 'client');
+  api.addFiles('lib/client/autoform-file.html', 'client');
+  api.addFiles('lib/client/autoform-file.less', 'client');
+  api.addFiles('lib/client/autoform-file.coffee', 'client');
 });
