@@ -46,7 +46,7 @@ Schemas.Posts = new SimpleSchema
 	title:
 		type:String
 		max: 60
-		
+
 	picture:
 		type: String
 		autoform:
@@ -85,4 +85,19 @@ You can customize the button / remove text.
 Defaults:
 ```
 {{> afFieldInput name="picture" label="Choose file" remove-label="Remove"}}
+```
+
+Also it is possible to customize accept attribute
+
+add it in your schema definition:
+```
+picture:
+  type: String
+  autoform:
+    afFieldInput:
+      type: 'fileUpload'
+      collection: 'Images'
+      accept: 'image/*'
+  label: 'Choose file' # optional
+
 ```
