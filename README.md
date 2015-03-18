@@ -11,9 +11,9 @@ Upload and manage files with autoForm.
 
 2) Create your collectionFS (See [collectionFS](https://github.com/CollectionFS/Meteor-CollectionFS))
 ```
-@Images = new FS.Collection("images",
+@Images = new FS.Collection("images", {
   stores: [new FS.Store.GridFS("images", {})]
-)
+});
 ```
 3) Make sure the correct allow rules & subscriptions are set up on the collectionFS
 ```
