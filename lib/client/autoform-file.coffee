@@ -82,11 +82,18 @@ Template.afFileUpload.events
 				Session.set 'fileUploadSelected[' + name + ']', files[0].name
 				# console.log fileObj
 
+				# submit if autosave is on
+				af = $('input[name="' + name + '"]').closest 'form'
+				if (AutoForm.getCurrentDataForForm af[0].id).autosave? is yes
+					af.submit()
+
 				refreshFileInput name
 	'click .file-upload-clear': (e, t)->
 		name = $(e.currentTarget).attr('file-input')
 		$('input[name="' + name + '"]').val('')
 		Session.set 'fileUpload[' + name + ']', 'delete-file'
+		af = $('input[name="' + name + '"]').closest 'form'
+		af.submit()
 
 Template.afFileUpload.helpers
 	collection: ->
