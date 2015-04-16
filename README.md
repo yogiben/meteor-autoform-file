@@ -46,7 +46,7 @@ Schemas.Posts = new SimpleSchema
 	title:
 		type:String
 		max: 60
-		
+
 	picture:
 		type: String
 		autoform:
@@ -76,6 +76,26 @@ or
 <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
+
+###Multiple images###
+If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
+
+```
+Schemas.Posts = new SimpleSchema
+	title:
+		type:String
+		max: 60
+
+	pictures:
+		type: [String]
+                label: 'Choose file' # optional
+        "pictures.$":
+                autoform:
+                        afFieldInput:
+                                type: 'fileUpload',
+                                collection: 'Images'
+```
+
 ###Security & optimization###
 The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
 
@@ -85,4 +105,19 @@ You can customize the button / remove text.
 Defaults:
 ```
 {{> afFieldInput name="picture" label="Choose file" remove-label="Remove"}}
+```
+
+Also it is possible to customize accept attribute
+
+add it in your schema definition:
+```
+picture:
+  type: String
+  autoform:
+    afFieldInput:
+      type: 'fileUpload'
+      collection: 'Images'
+      accept: 'image/*'
+  label: 'Choose file' # optional
+
 ```
