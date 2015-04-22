@@ -18,11 +18,11 @@
 </template>
 
 <template name="fileThumbIcon">
-	<a class="btn btn-default" target="_blank" href="{{absoluteSrc}}">
+	<a class="btn btn-default" target="_blank" href="{{absoluteSrc}}" download='{{filename}}'>
 		<i class="fa fa-{{icon}}"></i> {{filename}}
 	</a>
 </template>
 
 <template name="fileThumbImg">
-	<img src="{{src}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">
+	<img src="{{src}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded" download='{{filename}}'>
 </template>
