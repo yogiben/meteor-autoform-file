@@ -55,6 +55,13 @@ AutoForm.addHooks null,
 	onSuccess: ->
 		clearFilesFromSession()
 
+Template.fileThumbIcon.helpers
+	absoluteSrc: ->
+		try
+			Meteor.absoluteUrl (this.src?.slice 1)
+		catch err
+			console.log err
+
 Template.afFileUpload.destroyed = () ->
 	name = @data.name
 	Session.set 'fileUpload['+name+']', null
@@ -74,11 +81,19 @@ Template.afFileUpload.events
 				$('input[name="' + name + '"]').val(fileObj._id)
 				Session.set 'fileUploadSelected[' + name + ']', files[0].name
 				# console.log fileObj
+
+				# submit if autosave is on
+				af = $('input[name="' + name + '"]').closest 'form'
+				if (AutoForm.getCurrentDataForForm af[0].id).autosave? is yes
+					af.submit()
+
 				refreshFileInput name
 	'click .file-upload-clear': (e, t)->
 		name = $(e.currentTarget).attr('file-input')
 		$('input[name="' + name + '"]').val('')
 		Session.set 'fileUpload[' + name + ']', 'delete-file'
+		af = $('input[name="' + name + '"]').closest 'form'
+		af.submit()
 
 Template.afFileUpload.helpers
 	collection: ->
@@ -154,7 +169,6 @@ Template.afFileUpload.helpers
 		file = Session.get 'fileUpload['+name+']'
 		if file && file.length == 17
 			doc = window[collection].findOne({_id:file})
-			console.log doc
 			doc
 		else
 			null

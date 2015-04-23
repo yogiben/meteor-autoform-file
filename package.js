@@ -15,7 +15,7 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'less',
-    'aldeed:autoform@4.2.2',
+    'aldeed:autoform@4.0.0 || 5.0.0',
     'fortawesome:fontawesome@4.3.0'
     ],
     'client');
