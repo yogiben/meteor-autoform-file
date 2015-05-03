@@ -15,12 +15,12 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'less',
-    'aldeed:autoform@4.2.2',
+    'aldeed:autoform@5.1.2',
     'fortawesome:fontawesome@4.3.0'
     ],
     'client');
 
-  api.add_files('lib/client/autoform-file.html', 'client');
-  api.add_files('lib/client/autoform-file.less', 'client');
-  api.add_files('lib/client/autoform-file.coffee', 'client');
+  api.addFiles('lib/client/autoform-file.html', 'client');
+  api.addFiles('lib/client/autoform-file.less', 'client');
+  api.addFiles('lib/client/autoform-file.coffee', 'client');
 });
