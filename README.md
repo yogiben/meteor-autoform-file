@@ -85,15 +85,14 @@ Schemas.Posts = new SimpleSchema
 	title:
 		type:String
 		max: 60
-
 	pictures:
 		type: [String]
-                label: 'Choose file' # optional
-        "pictures.$":
-                autoform:
-                        afFieldInput:
-                                type: 'fileUpload',
-                                collection: 'Images'
+		label: 'Choose file' # optional
+	"pictures.$":
+		autoform:
+			afFieldInput:
+				type: 'fileUpload',
+				collection: 'Images'
 ```
 
 ###Security & optimization###
