@@ -1,28 +1,24 @@
 <template name="afFileUpload">
-		<div class="form-group file-upload">
-			{{#if fileUpload}}
-			{{#with fileUpload}}
-				{{> Template.dynamic template=template data=data}}
-			{{/with}}
-			<br/>
-			<a class="file-upload-clear" file-input="{{name}}"><i class="fa fa-times"></i> {{removeLabel}}</a>
-			{{else}}
-			<label for="file-{{name}}" class="btn btn-default">
-				{{label}}
-				<input class="hidden" id="file-{{name}}" file-input="{{name}}" type="file" accept="{{accept}}" />
-			</label>
-			{{/if}}
-			<!-- <div class="">{{> afQuickField name=name}}</div> -->
-			<input type="text" style="display:none;" data-cfs-collection="{{this.atts.collection}}" {{fileUploadAtts}} value="{{value}}">
-		</div>
+  <div>
+    {{#if value}}
+      {{> Template.dynamic template=previewTemplate data=previewData}}
+      <div>
+        <a href="#" class="js-remove"><i class="fa fa-times"></i> {{removeLabel}}</a>
+      </div>
+    {{else}}
+      <button type="button" class="btn btn-default js-select-file">{{label}}</button>
+      <input type="file" class="hidden js-file" accept="{{accept}}">
+    {{/if}}
+    <input type="hidden" class="js-value" value="{{value}}" data-schema-key="{{schemaKey}}">
+  </div>
 </template>
 
-<template name="fileThumbIcon">
-	<a class="btn btn-default" target="_blank" href="{{src}}">
-		<i class="fa fa-{{icon}}"></i> {{filename}}
+<template name="afFileUploadThumbIcon">
+	<a class="btn btn-default" target="_blank" href="{{url}}">
+		<i class="fa fa-{{icon}}"></i> {{original.name}}
 	</a>
 </template>
 
-<template name="fileThumbImg">
-	<img src="{{src}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">
+<template name="afFileUploadThumbImg">
+	<img src="{{url}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">
 </template>

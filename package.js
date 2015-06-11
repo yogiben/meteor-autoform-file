@@ -13,6 +13,7 @@ Package.onUse(function(api) {
     [
     'coffeescript',
     'underscore',
+    'reactive-var',
     'templating',
     'less',
     'aldeed:autoform@4.2.2 || 5.1.2',
