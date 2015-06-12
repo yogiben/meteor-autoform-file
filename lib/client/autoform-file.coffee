@@ -27,7 +27,8 @@ Template.afFileUpload.helpers
   removeLabel: ->
     @atts.removeLabel or 'Remove'
   value: ->
-    Template.instance().value.get()
+    doc = getDocument @
+    doc?.isUploaded() and doc._id
   schemaKey: ->
     @atts['data-schema-key']
   previewTemplate: ->
@@ -36,7 +37,7 @@ Template.afFileUpload.helpers
       'afFileUploadThumbImg'
     else
       'afFileUploadThumbIcon'
-  previewData: ->
+  file: ->
     getDocument @
 
 Template.afFileUpload.events

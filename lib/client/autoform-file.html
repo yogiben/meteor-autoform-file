@@ -1,10 +1,14 @@
 <template name="afFileUpload">
   <div>
-    {{#if value}}
-      {{> Template.dynamic template=previewTemplate data=previewData}}
+    {{#if file}}
+      {{#if file.isUploaded}}
+      {{> Template.dynamic template=previewTemplate data=file}}
       <div>
         <a href="#" class="js-remove"><i class="fa fa-times"></i> {{removeLabel}}</a>
       </div>
+      {{else}}
+      <span>Uploading...</span>
+      {{/if}}
     {{else}}
       <button type="button" class="btn btn-default js-select-file">{{label}}</button>
       <input type="file" class="hidden js-file" accept="{{accept}}">
