@@ -11,7 +11,7 @@
       {{/if}}
     {{else}}
       <button type="button" class="btn btn-default js-select-file">{{label}}</button>
-      <input type="file" class="hidden js-file" accept="{{accept}}">
+      <input type="file" class="hidden js-file" accept="{{atts.accept}}">
     {{/if}}
     <input type="hidden" class="js-value" value="{{value}}" data-schema-key="{{schemaKey}}">
   </div>
