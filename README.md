@@ -10,13 +10,13 @@ Upload and manage files with autoForm.
 1) Install `meteor add yogiben:autoform-file`
 
 2) Create your collectionFS (See [collectionFS](https://github.com/CollectionFS/Meteor-CollectionFS))
-```
+```coffeescript
 @Images = new FS.Collection("images",
   stores: [new FS.Store.GridFS("images", {})]
 )
 ```
 3) Make sure the correct allow rules & subscriptions are set up on the collectionFS
-```
+```coffeescript
 Images.allow
   insert: (userId, doc) ->
     true
@@ -24,12 +24,12 @@ Images.allow
     true
 ```
 and
-```
+```coffeescript
 Meteor.publish 'images', ->
   Images.find()
 ```
 and in your router.coffee
-```
+```coffeescript
   @route "profile",
     waitOn: ->
       [
@@ -37,22 +37,22 @@ and in your router.coffee
       ]
 ```
 4) Define your schema and set the `autoform` property like in the example below
-```
+```coffeescript
 Schemas = {}
 
 @Posts = new Meteor.Collection('posts');
 
 Schemas.Posts = new SimpleSchema
-	title:
-		type:String
-		max: 60
+  title:
+    type: String
+    max: 60
 
-	picture:
-		type: String
-		autoform:
-			afFieldInput:
-				type: 'fileUpload'
-				collection: 'Images'
+  picture:
+    type: String
+    autoform:
+      afFieldInput:
+        type: 'fileUpload'
+        collection: 'Images'
         label: 'Choose file' # optional
 
 Posts.attachSchema(Schemas.Posts)
@@ -80,20 +80,21 @@ or
 ###Multiple images###
 If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
 
-```
+```coffeescript
 Schemas.Posts = new SimpleSchema
-	title:
-		type:String
-		max: 60
+  title:
+    type: String
+    max: 60
 
-	pictures:
-		type: [String]
-                label: 'Choose file' # optional
-        "pictures.$":
-                autoform:
-                        afFieldInput:
-                                type: 'fileUpload',
-                                collection: 'Images'
+  pictures:
+    type: [String]
+    label: 'Choose file' # optional
+
+  "pictures.$":
+    autoform:
+      afFieldInput:
+        type: 'fileUpload',
+        collection: 'Images'
 ```
 
 ###Security & optimization###
@@ -110,7 +111,7 @@ Defaults:
 Also it is possible to customize accept attribute
 
 add it in your schema definition:
-```
+```coffeescript
 picture:
   type: String
   autoform:
@@ -118,6 +119,6 @@ picture:
       type: 'fileUpload'
       collection: 'Images'
       accept: 'image/*'
-  label: 'Choose file' # optional
+      label: 'Choose file' # optional
 
 ```

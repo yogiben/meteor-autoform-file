@@ -4,9 +4,9 @@ AutoForm.addInputType 'fileUpload',
     @val()
 
 getCollection = (context) ->
-	if typeof context.atts.collection == 'string'
-		context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
-	return context.atts.collection
+  if typeof context.atts.collection == 'string'
+    context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
+  return context.atts.collection
 
 getDocument = (context) ->
   collection = getCollection context
