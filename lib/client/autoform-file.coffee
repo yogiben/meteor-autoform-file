@@ -14,7 +14,7 @@ getDocument = (context) ->
   collection?.findOne(id)
 
 Template.afFileUpload.onCreated ->
-  @value = new ReactiveVar
+  @value = new ReactiveVar @data.value
 
 Template.afFileUpload.onRendered ->
   self = @
