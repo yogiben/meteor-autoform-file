@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'templating',
     'less',
     'aldeed:autoform@5.3.0',
-    'fortawesome:fontawesome'
+    'fortawesome:fontawesome@4.3.0'
     ],
     'client');
 
