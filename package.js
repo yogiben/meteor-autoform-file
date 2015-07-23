@@ -9,8 +9,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@1.0');
 
-  api.use(
-    [
+  api.use([
     'coffeescript',
     'underscore',
     'reactive-var',
@@ -18,10 +17,10 @@ Package.onUse(function(api) {
     'less',
     'aldeed:autoform@5.3.0',
     'fortawesome:fontawesome@4.3.0'
-    ],
-    'client');
+  ]);
 
   api.addFiles('lib/client/autoform-file.html', 'client');
   api.addFiles('lib/client/autoform-file.less', 'client');
   api.addFiles('lib/client/autoform-file.coffee', 'client');
+  api.addFiles('lib/server/publish.coffee', 'server');
 });

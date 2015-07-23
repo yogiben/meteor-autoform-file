@@ -5,8 +5,7 @@ AutoForm.addInputType 'fileUpload',
 
 getCollection = (context) ->
   if typeof context.atts.collection == 'string'
-    context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
-  return context.atts.collection
+    FS._collections[context.atts.collection] or window[context.atts.collection]
 
 getDocument = (context) ->
   collection = getCollection context
@@ -14,7 +13,12 @@ getDocument = (context) ->
   collection?.findOne(id)
 
 Template.afFileUpload.onCreated ->
+  self = @
   @value = new ReactiveVar @data.value
+
+  @autorun ->
+    _id = self.value.get()
+    _id and Meteor.subscribe 'autoformFileDoc', self.data.atts.collection, _id
 
 Template.afFileUpload.onRendered ->
   self = @
@@ -45,10 +49,13 @@ Template.afFileUpload.events
     t.$('.js-file').click()
 
   'change .js-file': (e, t) ->
-    files = e.target.files
     collection = getCollection t.data
 
-    collection.insert files[0], (err, fileObj) ->
+    file = new FS.File e.target.files[0]
+    if Meteor.userId
+      file.owner = Meteor.userId()
+
+    collection.insert file, (err, fileObj) ->
       if err then return console.log err
       t.value.set fileObj._id
 
