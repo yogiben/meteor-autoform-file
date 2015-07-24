@@ -1,6 +1,6 @@
 Package.describe({
   summary: "Upload and manage files easily with AutoForm and CollectionFS",
-  version: "0.1.1`",
+  version: "1.0.1",
   git: "http://github.com/yogiben/autoform-file.git"
 });
 
