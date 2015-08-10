@@ -41,6 +41,9 @@ Template.afFileUpload.helpers
       'afFileUploadThumbImg'
     else
       'afFileUploadThumbIcon'
+  previewTemplateData: ->
+    file: getDocument @
+    atts: @atts
   file: ->
     getDocument @
 
@@ -63,7 +66,13 @@ Template.afFileUpload.events
     e.preventDefault()
     t.value.set null
 
+Template.afFileUploadThumbImg.helpers
+  url: ->
+    @file.url store: @atts.store
+
 Template.afFileUploadThumbIcon.helpers
+  url: ->
+    @file.url store: @atts.store
   icon: ->
     switch @extension()
       when 'pdf'

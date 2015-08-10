@@ -2,7 +2,7 @@
   <div>
     {{#if file}}
       {{#if file.isUploaded}}
-      {{> Template.dynamic template=previewTemplate data=file}}
+      {{> Template.dynamic template=previewTemplate data=previewTemplateData}}
       <div>
         <a href="#" class="js-remove"><i class="fa fa-times"></i> {{removeLabel}}</a>
       </div>
@@ -19,7 +19,7 @@
 
 <template name="afFileUploadThumbIcon">
 	<a class="btn btn-default" target="_blank" href="{{url}}">
-		<i class="fa fa-{{icon}}"></i> {{original.name}}
+		<i class="fa fa-{{icon}}"></i> {{file.original.name}}
 	</a>
 </template>
 
