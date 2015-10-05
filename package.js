@@ -10,6 +10,7 @@ Package.onUse(function(api) {
   api.versionsFrom('METEOR@1.0');
 
   api.use([
+    'check',
     'coffeescript',
     'underscore',
     'reactive-var',
