@@ -97,7 +97,7 @@ Template.afFileUploadThumbIcon.helpers
   url: ->
     @file.url store: @atts.store
   icon: ->
-    switch @extension()
+    switch @file.extension()
       when 'pdf'
         'file-pdf-o'
       when 'doc', 'docx'
