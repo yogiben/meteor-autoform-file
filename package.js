@@ -2,7 +2,7 @@ Package.describe({
   name: "yogiben:autoform-file",
   summary: "File upload for AutoForm",
   description: "File upload for AutoForm",
-  version: "0.2.9",
+  version: "0.3.0",
   git: "http://github.com/yogiben/autoform-file.git"
 });
 
@@ -16,7 +16,7 @@ Package.onUse(function(api) {
     'reactive-var',
     'templating',
     'less@1.0.0 || 2.5.0',
-    'aldeed:autoform@5.4.0',
+    'aldeed:autoform@5.5.1',
     'fortawesome:fontawesome@4.4.0',
     'cfs:ui'
   ]);
