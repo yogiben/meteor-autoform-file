@@ -46,11 +46,15 @@ Template.afFileUpload.helpers
     atts: @atts
   file: ->
     getDocument @
+  removeFileBtnTemplate: ->
+    @atts?.removeFileBtnTemplate or 'afFileRemoveFileBtnTemplate'
+  selectFileBtnTemplate: ->
+    @atts?.selectFileBtnTemplate or 'afFileSelectFileBtnTemplate'
   uploadProgressTemplate: ->
-    @uploadProgressTemplate or 'afFileUploadProgress'
+    @atts?.uploadProgressTemplate or 'afFileUploadProgress'
 
 Template.afFileUpload.events
-  'click .js-select-file': (e, t) ->
+  'click .js-af-select-file': (e, t) ->
     t.$('.js-file').click()
 
   'change .js-file': (e, t) ->
@@ -64,15 +68,15 @@ Template.afFileUpload.events
       if err then return console.log err
       t.value.set fileObj._id
 
-  "dragover .js-select-file": (e) ->
+  "dragover .js-af-select-file": (e) ->
     e.stopPropagation()
     e.preventDefault()
 
-  "dragenter .js-select-file": (e) ->
+  "dragenter .js-af-select-file": (e) ->
     e.stopPropagation()
     e.preventDefault()
 
-  "drop .js-select-file": (e, t) ->
+  "drop .js-af-select-file": (e, t) ->
     e.stopPropagation();
     e.preventDefault();
     collection = getCollection t.data
@@ -85,7 +89,7 @@ Template.afFileUpload.events
       if err then return console.log err
       t.value.set fileObj._id
 
-  'click .js-remove': (e, t) ->
+  'click .js-af-remove-file': (e, t) ->
     e.preventDefault()
     t.value.set null
 

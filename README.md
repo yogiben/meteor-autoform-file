@@ -136,3 +136,28 @@ picture:
       collection: 'Images'
       uploadProgressTemplate: 'myUploadProgressTemplate'
 ```
+
+### Custom select/remove file buttons ###
+
+Remember to add `js-af-select-file` and `js-af-remove-file` classes to nodes which should fire an event on click.
+
+```coffeescript
+picture:
+  type: String
+  autoform:
+    afFieldInput:
+      type: 'fileUpload'
+      collection: 'Images'
+      selectFileBtnTemplate: 'mySelectFileBtn'
+      removeFileBtnTemplate: 'myRemoveFileBtn'
+```
+
+```html
+<template name="mySelectFileBtn">
+  <button type="button" class="js-af-select-file">Upload file</button>
+</template>
+
+<template name="myRemoveFileBtn">
+  <button type="button" class="js-af-remove-file">Remove</button>
+</template>
+```
