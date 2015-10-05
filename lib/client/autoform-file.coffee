@@ -36,11 +36,7 @@ Template.afFileUpload.helpers
   schemaKey: ->
     @atts['data-schema-key']
   previewTemplate: ->
-    doc = getDocument @
-    if doc?.isImage()
-      'afFileUploadThumbImg'
-    else
-      'afFileUploadThumbIcon'
+    @atts?.previewTemplate or if getDocument(@)?.isImage() then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon'
   previewTemplateData: ->
     file: getDocument @
     atts: @atts

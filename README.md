@@ -137,6 +137,29 @@ picture:
       uploadProgressTemplate: 'myUploadProgressTemplate'
 ```
 
+### Custom file preview ###
+
+Your custom file preview template data context will be:
+
+- *file* - FS.File instance
+- *atts* - autoform atts
+
+```coffeescript
+picture:
+  type: String
+  autoform:
+    afFieldInput:
+      type: 'fileUpload'
+      collection: 'Images'
+      previewTemplate: 'myFilePreview'
+```
+
+```html
+<template name="myFilePreview">
+  <a href="{{file.url}}">{{file.original.name}}</a>
+</template>
+```
+
 ### Custom select/remove file buttons ###
 
 Remember to add `js-af-select-file` and `js-af-remove-file` classes to nodes which should fire an event on click.
