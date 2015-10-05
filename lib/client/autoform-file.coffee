@@ -46,6 +46,8 @@ Template.afFileUpload.helpers
     atts: @atts
   file: ->
     getDocument @
+  uploadProgressTemplate: ->
+    @uploadProgressTemplate or 'afFileUploadProgress'
 
 Template.afFileUpload.events
   'click .js-select-file': (e, t) ->
@@ -65,7 +67,7 @@ Template.afFileUpload.events
   "dragover .js-select-file": (e) ->
     e.stopPropagation()
     e.preventDefault()
-    
+
   "dragenter .js-select-file": (e) ->
     e.stopPropagation()
     e.preventDefault()

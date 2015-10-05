@@ -7,7 +7,7 @@
         <a href="#" class="js-remove"><i class="fa fa-times"></i> {{removeLabel}}</a>
       </div>
       {{else}}
-      <span>Uploading...</span>
+        {{> Template.dynamic template=uploadProgressTemplate data=file}}
       {{/if}}
     {{else}}
       <button type="button" class="btn btn-default js-select-file">{{label}}</button>
@@ -25,4 +25,8 @@
 
 <template name="afFileUploadThumbImg">
 	<img src="{{url}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">
+</template>
+
+<template name="afFileUploadProgress">
+  {{> FS.UploadProgressBar}}
 </template>

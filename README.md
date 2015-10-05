@@ -122,3 +122,17 @@ picture:
       label: 'Choose file' # optional
 
 ```
+
+### Upload progress bar ###
+
+By default `FS.UploadProgressTemplate` from [cfs:ui](https://github.com/CollectionFS/Meteor-cfs-ui) package is used to display upload progress. You can specify your own template with `uploadProgressTemplate` option, e.g.
+
+```coffeescript
+picture:
+  type: String
+  autoform:
+    afFieldInput:
+      type: 'fileUpload'
+      collection: 'Images'
+      uploadProgressTemplate: 'myUploadProgressTemplate'
+```
