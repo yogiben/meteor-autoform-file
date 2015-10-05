@@ -41,6 +41,10 @@ Template.afFileUpload.helpers
     file: getDocument @
     atts: @atts
   file: ->
+    Tracker.nonreactive =>
+      t = Template.instance()
+      if t.value.get() isnt @value
+        t.value.set @value
     getDocument @
   removeFileBtnTemplate: ->
     @atts?.removeFileBtnTemplate or 'afFileRemoveFileBtnTemplate'
