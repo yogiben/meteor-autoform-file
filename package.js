@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'underscore',
     'reactive-var',
     'templating',
-    'less',
+    'less@1.0.0 || 2.5.0',
     'aldeed:autoform@5.4.0',
     'fortawesome:fontawesome@4.4.0'
   ]);

@@ -62,6 +62,27 @@ Template.afFileUpload.events
       if err then return console.log err
       t.value.set fileObj._id
 
+  "dragover .js-select-file": (e) ->
+    e.stopPropagation()
+    e.preventDefault()
+    
+  "dragenter .js-select-file": (e) ->
+    e.stopPropagation()
+    e.preventDefault()
+
+  "drop .js-select-file": (e, t) ->
+    e.stopPropagation();
+    e.preventDefault();
+    collection = getCollection t.data
+
+    file = new FS.File e.originalEvent.dataTransfer.files[0]
+    if Meteor.userId
+      file.owner = Meteor.userId()
+
+    collection.insert file, (err, fileObj) ->
+      if err then return console.log err
+      t.value.set fileObj._id
+
   'click .js-remove': (e, t) ->
     e.preventDefault()
     t.value.set null
