@@ -184,3 +184,30 @@ picture:
   <button type="button" class="js-af-remove-file">Remove</button>
 </template>
 ```
+
+### Callbacks ###
+
+**onBeforeInsert** - can be used to modify file (remember to return fileObj)
+
+**onAfterInsert** - called after insert with two arguments: error object and file object
+
+Please note that callback properties are functions that return callbacks. This is because autoform evaluates function attributes first.
+
+```coffeescript
+picture:
+  type: String
+  autoform:
+    afFieldInput:
+      type: 'fileUpload'
+      collection: 'Images'
+      onBeforeInsert: ->
+        (fileObj) ->
+          fileObj.name 'picture.png'
+          fileObj
+      onAfterInsert: ->
+        (err, fileObj) ->
+          if err
+            alert 'Error'
+          else
+            alert 'Upload successful'
+```

@@ -16,6 +16,30 @@ Template.afFileUpload.onCreated ->
   self = @
   @value = new ReactiveVar @data.value
 
+  @_stopInterceptValue = false
+  @_interceptValue = (ctx) =>
+    unless @_stopInterceptValue
+      t = Template.instance()
+      if t.value.get() isnt false and t.value.get() isnt ctx.value
+        t.value.set ctx.value
+        @_stopInterceptValue = true
+
+  @_insert = (file) ->
+    collection = getCollection self.data
+
+    if Meteor.userId
+      file.owner = Meteor.userId()
+
+    if typeof self.data.atts?.onBeforeInsert is 'function'
+      file = (self.data.atts.onBeforeInsert file) or file
+
+    collection.insert file, (err, fileObj) ->
+      if typeof self.data.atts?.onAfterInsert is 'function'
+        self.data.atts.onAfterInsert err, fileObj
+
+      if err then return console.log err
+      self.value.set fileObj._id
+
   @autorun ->
     _id = self.value.get()
     _id and Meteor.subscribe 'autoformFileDoc', self.data.atts.collection, _id
@@ -23,7 +47,7 @@ Template.afFileUpload.onCreated ->
 Template.afFileUpload.onRendered ->
   self = @
   $(self.firstNode).closest('form').on 'reset', ->
-    self.value.set null
+    self.value.set false
 
 Template.afFileUpload.helpers
   label: ->
@@ -41,10 +65,7 @@ Template.afFileUpload.helpers
     file: getDocument @
     atts: @atts
   file: ->
-    Tracker.nonreactive =>
-      t = Template.instance()
-      if t.value.get() isnt @value
-        t.value.set @value
+    Template.instance()._interceptValue @
     getDocument @
   removeFileBtnTemplate: ->
     @atts?.removeFileBtnTemplate or 'afFileRemoveFileBtnTemplate'
@@ -58,15 +79,7 @@ Template.afFileUpload.events
     t.$('.js-file').click()
 
   'change .js-file': (e, t) ->
-    collection = getCollection t.data
-
-    file = new FS.File e.target.files[0]
-    if Meteor.userId
-      file.owner = Meteor.userId()
-
-    collection.insert file, (err, fileObj) ->
-      if err then return console.log err
-      t.value.set fileObj._id
+    t._insert e.target.files[0]
 
   "dragover .js-af-select-file": (e) ->
     e.stopPropagation()
@@ -77,21 +90,13 @@ Template.afFileUpload.events
     e.preventDefault()
 
   "drop .js-af-select-file": (e, t) ->
-    e.stopPropagation();
-    e.preventDefault();
-    collection = getCollection t.data
-
-    file = new FS.File e.originalEvent.dataTransfer.files[0]
-    if Meteor.userId
-      file.owner = Meteor.userId()
-
-    collection.insert file, (err, fileObj) ->
-      if err then return console.log err
-      t.value.set fileObj._id
+    e.stopPropagation()
+    e.preventDefault()
+    t._insert new FS.File e.originalEvent.dataTransfer.files[0]
 
   'click .js-af-remove-file': (e, t) ->
     e.preventDefault()
-    t.value.set null
+    t.value.set false
 
 Template.afFileUploadThumbImg.helpers
   url: ->
