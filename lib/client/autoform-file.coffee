@@ -16,14 +16,6 @@ Template.afFileUpload.onCreated ->
   self = @
   @value = new ReactiveVar @data.value
 
-  @_stopInterceptValue = false
-  @_interceptValue = (ctx) =>
-    unless @_stopInterceptValue
-      t = Template.instance()
-      if t.value.get() isnt false and t.value.get() isnt ctx.value
-        t.value.set ctx.value
-        @_stopInterceptValue = true
-
   @_insert = (file) ->
     collection = getCollection self.data
 
@@ -65,7 +57,6 @@ Template.afFileUpload.helpers
     file: getDocument @
     atts: @atts
   file: ->
-    Template.instance()._interceptValue @
     getDocument @
   removeFileBtnTemplate: ->
     @atts?.removeFileBtnTemplate or 'afFileRemoveFileBtnTemplate'
