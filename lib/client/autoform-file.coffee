@@ -20,7 +20,7 @@ Template.afFileUpload.onCreated ->
   @_interceptValue = (ctx) =>
     unless @_stopInterceptValue
       t = Template.instance()
-      if t.value.get() isnt false and t.value.get() isnt ctx.value
+      if t.value.get() isnt false and t.value.get() isnt ctx.value and ctx.value?.length > 0
         t.value.set ctx.value
         @_stopInterceptValue = true
 
