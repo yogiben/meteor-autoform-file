@@ -27,13 +27,14 @@ Template.afFileUpload.onCreated ->
   @_insert = (file) ->
     collection = getCollection self.data
 
-    if Meteor.userId
-      file.owner = Meteor.userId()
-
     if typeof self.data.atts?.onBeforeInsert is 'function'
       file = (self.data.atts.onBeforeInsert file) or file
 
     collection.insert file, (err, fileObj) ->
+
+      # Add the user _id to the metadata
+      fileObj.update $set: metadata: owner: Meteor.userId()
+
       if typeof self.data.atts?.onAfterInsert is 'function'
         self.data.atts.onAfterInsert err, fileObj
 
