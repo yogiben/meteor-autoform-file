@@ -48,6 +48,9 @@ Template.afFileUpload.onRendered ->
   self = @
   $(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
+  @$('.js-file').fileupload
+    change: (e, data) ->
+      self._insert new FS.File data.files[0]
 
 Template.afFileUpload.helpers
   label: ->
@@ -71,16 +74,13 @@ Template.afFileUpload.helpers
     @atts?.removeFileBtnTemplate or 'afFileRemoveFileBtnTemplate'
   selectFileBtnTemplate: ->
     @atts?.selectFileBtnTemplate or 'afFileSelectFileBtnTemplate'
+  selectFileBtnData: ->
+    label: @atts.label or 'Choose file'
+    accepts: @atts.accepts
   uploadProgressTemplate: ->
     @atts?.uploadProgressTemplate or 'afFileUploadProgress'
 
 Template.afFileUpload.events
-  'click .js-af-select-file': (e, t) ->
-    t.$('.js-file').click()
-
-  'change .js-file': (e, t) ->
-    t._insert e.target.files[0]
-
   "dragover .js-af-select-file": (e) ->
     e.stopPropagation()
     e.preventDefault()
