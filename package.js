@@ -1,7 +1,7 @@
 Package.describe({
   name: "yogiben:autoform-file",
-  summary: "File upload for AutoForm (LOCALY)",
-  description: "File upload for AutoForm (LOCALY)",
+  summary: "File upload for AutoForm",
+  description: "File upload for AutoForm",
   version: "0.4.1",
   git: "https://github.com/yogiben/autoform-file.git"
 });
