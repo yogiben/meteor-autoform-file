@@ -38,7 +38,7 @@ Template.afFileUpload.onCreated ->
         self.data.atts.onAfterInsert err, fileObj
 
       fileObj.update $set: metadata: owner: Meteor.userId()
-      
+
       if err then return console.log err
       self.value.set fileObj._id
 
@@ -50,9 +50,6 @@ Template.afFileUpload.onRendered ->
   self = @
   $(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
-  @$('.js-file').fileupload
-    change: (e, data) ->
-      self._insert new FS.File data.files[0]
 
 Template.afFileUpload.helpers
   label: ->
@@ -100,6 +97,9 @@ Template.afFileUpload.events
     e.preventDefault()
     t.value.set false
 
+  'fileuploadchange .js-file': (e, t, data) ->
+    t._insert new FS.File data.files[0]
+
 Template.afFileUploadThumbImg.helpers
   url: ->
     @file.url store: @atts.store
@@ -117,3 +117,6 @@ Template.afFileUploadThumbIcon.helpers
         'file-powerpoint-o'
       else
         'file-o'
+
+Template.afFileSelectFileBtnTemplate.onRendered ->
+  @$('.js-file').fileupload()
