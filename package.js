@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'coffeescript',
     'underscore',
     'templating',
-    'less',
+    'less@1.0.0 || 2.5.0',
     'aldeed:autoform@4.0.0 || 5.0.0',
     'fortawesome:fontawesome@4.3.0'
     ],

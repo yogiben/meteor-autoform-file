@@ -34,11 +34,15 @@ getIcon = (file)->
 			icon = 'link'
 		icon
 
-getTemplate = (file)->
-	file = file.toLowerCase()
-	template = 'fileThumbIcon'
-	if file.indexOf('.jpg') > -1 || file.indexOf('.png') > -1 || file.indexOf('.gif') > -1
-		template = 'fileThumbImg'
+getTemplate = (file, context)->
+	file = file?.toLowerCase()
+	template = context.atts.previewTemplate if typeof context.atts.previewTemplate == 'string'
+
+	if file and (file.indexOf('.jpg') > -1 || file.indexOf('.png') > -1 || file.indexOf('.gif') > -1)
+		template ?= 'fileThumbImg'
+
+	template ?= 'fileThumbIcon'
+
 	template
 
 clearFilesFromSession = ->
@@ -51,16 +55,24 @@ getCollection = (context) ->
 		context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
 	return context.atts.collection
 
+getAbsoluteUrlFromFile = ->
+		try
+			url = Meteor.absoluteUrl (this.src?.slice 1)
+			url ?= this.url()
+			url
+		catch err
+			console.log err
+
+
 AutoForm.addHooks null,
 	onSuccess: ->
 		clearFilesFromSession()
 
 Template.fileThumbIcon.helpers
-	absoluteSrc: ->
-		try
-			Meteor.absoluteUrl (this.src?.slice 1)
-		catch err
-			console.log err
+	absoluteSrc: getAbsoluteUrlFromFile
+
+Template.fileThumbImg.helpers
+	absoluteSrc: getAbsoluteUrlFromFile
 
 Template.afFileUpload.destroyed = () ->
 	name = @data.name
@@ -137,7 +149,7 @@ Template.afFileUpload.helpers
 					# No subscription
 					filename = Session.get 'fileUploadSelected[' + name + ']'
 					obj =
-						template: 'fileThumbIcon'
+						template: getTemplate(filename,@)
 						data:
 							filename: filename
 							icon: getIcon filename
@@ -147,7 +159,7 @@ Template.afFileUpload.helpers
 				src = filename
 		if filename
 			obj =
-				template: getTemplate(filename)
+				template: getTemplate(filename,@)
 				data:
 					src: src
 					filename: filename
