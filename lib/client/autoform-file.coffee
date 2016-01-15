@@ -55,13 +55,14 @@ getCollection = (context) ->
 		context.atts.collection = FS._collections[context.atts.collection] or window[context.atts.collection]
 	return context.atts.collection
 
-getAbsoluteUrlFromFile = ->
-		try
-			url = Meteor.absoluteUrl (this.src?.slice 1)
-			url ?= this.url()
-			url
-		catch err
-			console.log err
+getAbsoluteUrlFromFile = (fileObj)->
+  fileObj ?= this
+  try
+    url = Meteor.absoluteUrl (this.src?.slice 1)
+    url ?= this.url()
+    url
+  catch err
+    console.log err
 
 
 AutoForm.addHooks null,
@@ -99,6 +100,10 @@ Template.afFileUpload.events
 				if (AutoForm.getCurrentDataForForm af[0].id).autosave? is yes
 					af.submit()
 
+        # invoke the onUploaded callback
+				if t?.data?.onUploaded
+          t?.data?.onUploaded(t, fileObj)
+
 				refreshFileInput name
 	'click .file-upload-clear': (e, t)->
 		name = $(e.currentTarget).attr('file-input')
@@ -114,23 +119,26 @@ Template.afFileUpload.helpers
 		@atts.label or 'Choose file'
 	removeLabel: ->
 		@atts['remove-label'] or 'Remove'
-	accept: ->		
+	accept: ->
 		@atts.accept or '*'
 	fileUploadAtts: ->
 		atts = _.clone(this.atts)
 		delete atts.collection
 		atts
 	fileUpload: ->
+		# set callback to current template
+		@onUploaded ?= Template.parentData(13)?.onUploaded
+
 		af = Template.parentData(1)._af
 		# Template.parentData(4).value
 
 		name = @atts.name
 		collection = getCollection(@)
 
-		if af &&  af.submitType == 'insert'
+		if af && af.submitType == 'insert'
 			doc = af.doc
 
-		parentData = Template.parentData(0).value or Template.parentData(4).value
+		parentData = Template.parentData(0)?.value or Template.parentData(4)?.value
 		if Session.equals('fileUpload['+name+']', 'delete-file')
 			return null
 		else if !!Session.get('fileUpload['+name+']')

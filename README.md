@@ -71,9 +71,9 @@ or
 
 ```
 {{#autoForm collection="Posts" type="insert"}}
-{{> afQuickField name="title"}}
-{{> afQuickField name="picture"}}
-<button type="submit" class="btn btn-primary">Insert</button>
+    {{> afQuickField name="title"}}
+    {{> afQuickField name="picture"}}
+    <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
 
@@ -95,6 +95,35 @@ Schemas.Posts = new SimpleSchema
                                 type: 'fileUpload',
                                 collection: 'Images'
 ```
+
+###Image Upload Preview Callback###
+
+You can set up a callback to be invoked after a file has been uploaded and ready for preview. 
+
+Params:
+
+- t: Autoform File input Template Instance  
+- fileObj: CollectionFS FileFS instance
+
+On your template:
+```
+Template.myTemplate.helpers
+  'onFileUploaded': ()->
+    return (t, fileObj)->
+      console.log 'onUploaded'
+```
+
+On your view:
+```
+<template name="myTemplate">
+    {{#autoForm collection="Posts" type="insert"}}
+        {{> afQuickField name="picture" onUploaded=onFileUploaded}}
+        <button type="submit" class="btn btn-primary">Insert</button>
+    {{/autoForm}}
+</template>
+```
+
+On y
 
 ###Security & optimization###
 The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
