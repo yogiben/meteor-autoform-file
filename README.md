@@ -8,7 +8,7 @@ Upload and manage files with autoForm.
 
 Maintained by [Meteor Factory](https://meteorfactory.io). Professional Meteor development.
 
-![Meteor autoform file](https://raw.githubusercontent.com/yogiben/meteor-autoform-file/master/readme/meteor-factory.jpg)
+[![Meteor autoform file](https://raw.githubusercontent.com/yogiben/meteor-autoform-file/master/readme/meteor-factory.jpg)](http://meteorfactory.io)
 
 ### Quick Start ###
 1) Install `meteor add yogiben:autoform-file`
