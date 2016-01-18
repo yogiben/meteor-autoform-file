@@ -19,7 +19,8 @@ Package.onUse(function(api) {
     'aldeed:autoform@5.5.1',
     'fortawesome:fontawesome@4.5.0',
     'cfs:ui@0.1.3',
-    'mpowaga:jquery-fileupload@9.11.2'
+    'mpowaga:jquery-fileupload@9.11.2',
+    'accounts-password'
   ]);
 
   api.addFiles('lib/client/autoform-file.html', 'client');
