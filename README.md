@@ -123,7 +123,6 @@ On your view:
 </template>
 ```
 
-On y
 
 ###Security & optimization###
 The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
