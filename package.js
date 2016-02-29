@@ -1,5 +1,5 @@
 Package.describe({
-  name: "yogiben:autoform-file",
+  name: "rapito:autoform-file",
   summary: "File upload for AutoForm",
   description: "File upload for AutoForm",
   version: "0.3.2",
