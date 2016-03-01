@@ -10,7 +10,7 @@
     {{else}}
       {{> Template.dynamic template=selectFileBtnTemplate data=selectFileBtnData}}
     {{/if}}
-    <input type="hidden" class="js-value" value="{{value}}" data-schema-key="{{schemaKey}}">
+    <input type="hidden" class="js-value" value="{{value}}" data-schema-key="{{schemaKey}}" name="{{schemaKey}}">
   </div>
 </template>
 
