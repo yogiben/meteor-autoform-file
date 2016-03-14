@@ -48,7 +48,8 @@ Template.afFileUpload.onCreated ->
 
 Template.afFileUpload.onRendered ->
   self = @
-  $(self.firstNode).closest('form').on 'reset', ->
+  jq = $ or jQuery
+  jq(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
 
 Template.afFileUpload.helpers
@@ -119,4 +120,5 @@ Template.afFileUploadThumbIcon.helpers
         'file-o'
 
 Template.afFileSelectFileBtnTemplate.onRendered ->
-  @$('.js-file').fileupload()
+  jq = $ or jQuery
+  jq('.js-file').fileupload()
