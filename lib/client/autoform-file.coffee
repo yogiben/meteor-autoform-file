@@ -1,3 +1,5 @@
+getCollection = undefined
+getDocument = undefined
 AutoForm.addInputType 'fileUpload',
   template: 'afFileUpload'
   valueOut: ->
@@ -5,118 +7,139 @@ AutoForm.addInputType 'fileUpload',
 
 getCollection = (context) ->
   if typeof context.atts.collection == 'string'
-    FS._collections[context.atts.collection] or window[context.atts.collection]
+    return FS._collections[context.atts.collection] or window[context.atts.collection]
+  return
 
 getDocument = (context) ->
-  collection = getCollection context
-  id = Template.instance()?.value?.get?()
-  collection?.findOne(id)
+  collection = undefined
+  id = undefined
+  ref = undefined
+  ref1 = undefined
+  collection = getCollection(context)
+  id = if (ref = Template.instance()) != null then (if (ref1 = ref.value) != null then (if typeof ref1.get == 'function' then ref1.get() else undefined) else undefined) else undefined
+  if collection != null then collection.findOne(id) else undefined
 
 Template.afFileUpload.onCreated ->
-  self = @
-  @value = new ReactiveVar @data.value
-
+  self = undefined
+  self = this
+  @value = new ReactiveVar(@data.value)
   @_stopInterceptValue = false
-  @_interceptValue = (ctx) =>
-    unless @_stopInterceptValue
-      t = Template.instance()
-      if t.value.get() isnt false and t.value.get() isnt ctx.value and ctx.value?.length > 0
-        t.value.set ctx.value
-        @_stopInterceptValue = true
+  @_interceptValue = ((_this) ->
+    (ctx) ->
+      ref = undefined
+      t = undefined
+      if !_this._stopInterceptValue
+        t = Template.instance()
+        if t.value.get() != false and t.value.get() != ctx.value and (if (ref = ctx.value) != null then ref.length else undefined) > 0
+          t.value.set ctx.value
+          return _this._stopInterceptValue = true
+      return
+  )(this)
 
   @_insert = (file) ->
-    collection = getCollection self.data
-
+    `var file`
+    collection = undefined
+    ref = undefined
+    collection = getCollection(self.data)
     if Meteor.userId
       file.owner = Meteor.userId()
-
-    if typeof self.data.atts?.onBeforeInsert is 'function'
-      file = (self.data.atts.onBeforeInsert file) or file
-
+    if typeof (if (ref = self.data.atts) != null then ref.onBeforeInsert else undefined) == 'function'
+      file = self.data.atts.onBeforeInsert(file) or file
+    file = new (FS.File)(file)
+    file.uploadedFrom = Meteor.userId()
+    maxChunk = 2097152
+    FS.config.uploadChunkSize = if file.original.size < 10 * maxChunk then file.original.size / 10 else maxChunk
     collection.insert file, (err, fileObj) ->
-      if typeof self.data.atts?.onAfterInsert is 'function'
+      ref1 = undefined
+      if typeof (if (ref1 = self.data.atts) != null then ref1.onAfterInsert else undefined) == 'function'
         self.data.atts.onAfterInsert err, fileObj
-
       fileObj.update $set: metadata: owner: Meteor.userId()
-
-      if err then return console.log err
+      if err
+        return console.log(err)
       self.value.set fileObj._id
 
   @autorun ->
+    _id = undefined
     _id = self.value.get()
-    _id and Meteor.subscribe 'autoformFileDoc', self.data.atts.collection, _id
-
+    _id and Meteor.subscribe('autoformFileDoc', self.data.atts.collection, _id)
 Template.afFileUpload.onRendered ->
-  self = @
+  self = undefined
+  self = this
   $(self.firstNode).closest('form').on 'reset', ->
     self.value.set false
-
 Template.afFileUpload.helpers
   label: ->
     @atts.label or 'Choose file'
   removeLabel: ->
     @atts.removeLabel or 'Remove'
   value: ->
-    doc = getDocument @
-    doc?.isUploaded() and doc._id
+    doc = undefined
+    doc = getDocument(this)
+    (if doc != null then doc.isUploaded() else undefined) and doc._id
   schemaKey: ->
     @atts['data-schema-key']
   previewTemplate: ->
-    @atts?.previewTemplate or if getDocument(@)?.isImage() then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon'
+    ref = undefined
+    ref1 = undefined
+    (if (ref = @atts) != null then ref.previewTemplate else undefined) or (if (if (ref1 = getDocument(this)) != null then ref1.isImage() else undefined) then 'afFileUploadThumbImg' else 'afFileUploadThumbIcon')
   previewTemplateData: ->
-    file: getDocument @
-    atts: @atts
+    {
+      file: getDocument(this)
+      atts: @atts
+    }
   file: ->
-    Template.instance()._interceptValue @
-    getDocument @
+    Template.instance()._interceptValue this
+    getDocument this
   removeFileBtnTemplate: ->
-    @atts?.removeFileBtnTemplate or 'afFileRemoveFileBtnTemplate'
+    ref = undefined
+    (if (ref = @atts) != null then ref.removeFileBtnTemplate else undefined) or 'afFileRemoveFileBtnTemplate'
   selectFileBtnTemplate: ->
-    @atts?.selectFileBtnTemplate or 'afFileSelectFileBtnTemplate'
+    ref = undefined
+    (if (ref = @atts) != null then ref.selectFileBtnTemplate else undefined) or 'afFileSelectFileBtnTemplate'
   selectFileBtnData: ->
-    label: @atts.label or 'Choose file'
-    accepts: @atts.accepts
+    {
+      label: @atts.label or 'Choose file'
+      accepts: @atts.accepts
+    }
   uploadProgressTemplate: ->
-    @atts?.uploadProgressTemplate or 'afFileUploadProgress'
-
+    ref = undefined
+    (if (ref = @atts) != null then ref.uploadProgressTemplate else undefined) or 'afFileUploadProgress'
 Template.afFileUpload.events
-  "dragover .js-af-select-file": (e) ->
+  'dragover .js-af-select-file': (e) ->
     e.stopPropagation()
     e.preventDefault()
-
-  "dragenter .js-af-select-file": (e) ->
+  'dragenter .js-af-select-file': (e) ->
     e.stopPropagation()
     e.preventDefault()
-
-  "drop .js-af-select-file": (e, t) ->
+  'drop .js-af-select-file': (e, t) ->
     e.stopPropagation()
     e.preventDefault()
-    t._insert new FS.File e.originalEvent.dataTransfer.files[0]
-
+    t._insert new (FS.File)(e.originalEvent.dataTransfer.files[0])
   'click .js-af-remove-file': (e, t) ->
     e.preventDefault()
     t.value.set false
-
   'fileuploadchange .js-file': (e, t, data) ->
-    t._insert new FS.File data.files[0]
-
-Template.afFileUploadThumbImg.helpers
-  url: ->
-    @file.url store: @atts.store
-
+    t._insert new (FS.File)(data.files[0])
+Template.afFileUploadThumbImg.helpers url: ->
+  @file.url store: @atts.store
 Template.afFileUploadThumbIcon.helpers
   url: ->
     @file.url store: @atts.store
   icon: ->
     switch @file.extension()
       when 'pdf'
-        'file-pdf-o'
+        return 'file-pdf-o'
       when 'doc', 'docx'
-        'file-word-o'
+        return 'file-word-o'
       when 'ppt', 'avi', 'mov', 'mp4'
-        'file-powerpoint-o'
+        return 'file-powerpoint-o'
       else
-        'file-o'
-
+        return 'file-o'
+    return
 Template.afFileSelectFileBtnTemplate.onRendered ->
   @$('.js-file').fileupload()
+# ---
+# generated by coffee-script 1.9.2
+
+# ---
+# generated by js2coffee 2.1.0
