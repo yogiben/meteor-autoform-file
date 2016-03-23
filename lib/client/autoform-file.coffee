@@ -75,7 +75,7 @@ Template.afFileUpload.helpers
   value: ->
     doc = undefined
     doc = getDocument(this)
-    (if doc != null then doc.isUploaded() else undefined) and doc._id
+    (if doc then doc.isUploaded() else undefined) and doc._id
   schemaKey: ->
     @atts['data-schema-key']
   previewTemplate: ->
