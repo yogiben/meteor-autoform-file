@@ -1,14 +1,13 @@
 Autoform File
 =============
 
-### Description ###
+### Description
 Upload and manage files with autoForm using ostrio:files.
 This was ported from yogiben:autoform-file to use ostiro:files instead of the now deprecated CollectionFS.
 
-### Quick Start ###
-1) Install `meteor add ostrio:autoform-files`
-
-2) Create your Files Collection (See [osiro:files](https://github.com/VeliovGroup/Meteor-Files.git))
+### Quick Start
+##### 1. Install `meteor add ostrio:autoform-files`
+##### 2. Create your Files Collection (See [ostrio:files](https://github.com/VeliovGroup/Meteor-Files.git))
 ```javascript
 var Images = new FilesCollection({
   collectionName: 'Images',
@@ -33,7 +32,7 @@ if (Meteor.isServer) {
   });
 }
 ```
-4) Define your schema and set the `autoform` property like in the example below
+##### 3. Define your schema and set the `autoform` property like in the example below
 ```javascript
 Schemas = {}
 
@@ -61,9 +60,8 @@ Posts.attachSchema(Schemas.Posts);
 
 The `collection` property is the field name of your files collection.
 
-5) Generate the form with `{{> quickform}}` or `{{#autoform}}`
-
-e.g.
+##### 4. Generate the form with `{{> quickform}}` or `{{#autoform}}`
+e.g.:
 ```
 {{> quickForm collection="Posts" type="insert"}}
 ```
@@ -72,13 +70,13 @@ or
 
 ```
 {{#autoForm collection="Posts" type="insert"}}
-{{> afQuickField name="title"}}
-{{> afQuickField name="picture"}}
-<button type="submit" class="btn btn-primary">Insert</button>
+  {{> afQuickField name="title"}}
+  {{> afQuickField name="picture"}}
+  <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
 
-###Multiple images###
+### Multiple images
 If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
 
 ```javascript
@@ -102,7 +100,7 @@ Schemas.Posts = new SimpleSchema({
 })
 ```
 
-### Customization ###
+### Customization
 You can customize the button / remove text.
 
 Defaults:
@@ -127,7 +125,8 @@ picture: {
 }
 
 ```
-### Custom file preview ###
+
+### Custom file preview
 
 Your custom file preview template data context will be:
 
@@ -153,7 +152,7 @@ picture: {
 </template>
 ```
 
-### Custom select/remove file buttons ###
+### Custom select/remove file buttons
 
 Remember to add `js-af-select-file` and `js-af-remove-file` classes to nodes which should fire an event on click.
 
@@ -181,7 +180,7 @@ picture: {
 </template>
 ```
 
-### Callbacks ###
+### Callbacks
 
 **onBeforeInsert** - can be used to modify file (remember to return fileObj)
 
