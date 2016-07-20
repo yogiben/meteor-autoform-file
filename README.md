@@ -49,7 +49,6 @@ Schemas.Posts = new SimpleSchema({
       afFieldInput: {
         type: 'fileUpload',
         collection: 'Images',
-        label: 'Choose file' # optional
       }
     }
   }
@@ -76,7 +75,7 @@ or
 {{/autoForm}}
 ```
 
-### Multiple images
+### Multiple images //does not support yet
 If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
 
 ```javascript
@@ -100,33 +99,7 @@ Schemas.Posts = new SimpleSchema({
 })
 ```
 
-### Customization
-You can customize the button / remove text.
-
-Defaults:
-```
-{{> afFieldInput name="picture" label="Choose file" remove-label="Remove"}}
-```
-
-Also it is possible to customize accept attribute
-
-add it in your schema definition:
-```javascript
-picture: {
-  type: String,
-  autoform: {
-    afFieldInput: {
-      type: 'fileUpload',
-      collection: 'Images',
-      accept: 'image/*',
-      label: 'Choose file' # optional
-    }
-  }
-}
-
-```
-
-### Custom file preview
+### Custom file preview /// need to work on this
 
 Your custom file preview template data context will be:
 
@@ -150,62 +123,4 @@ picture: {
 <template name="myFilePreview">
   <a href="{{file.url}}">{{file.original.name}}</a>
 </template>
-```
-
-### Custom select/remove file buttons
-
-Remember to add `js-af-select-file` and `js-af-remove-file` classes to nodes which should fire an event on click.
-
-```javascript
-picture: {
-  type: String,
-  autoform: {
-    afFieldInput: {
-      type: 'fileUpload',
-      collection: 'Images',
-      selectFileBtnTemplate: 'mySelectFileBtn',
-      removeFileBtnTemplate: 'myRemoveFileBtn'
-    }
-  }
-}
-```
-
-```html
-<template name="mySelectFileBtn">
-  <button type="button" class="js-af-select-file">Upload file</button>
-</template>
-
-<template name="myRemoveFileBtn">
-  <button type="button" class="js-af-remove-file">Remove</button>
-</template>
-```
-
-### Callbacks
-
-**onBeforeInsert** - can be used to modify file (remember to return fileObj)
-
-**onAfterInsert** - called after insert with two arguments: error object and file object
-
-Please note that callback properties are functions that return callbacks. This is because autoform evaluates function attributes first.
-
-```javascript
-picture: {
-  type: String,
-  autoform: {
-    afFieldInput: {
-      type: 'fileUpload',
-      collection: 'Images',
-      onBeforeInsert(fileObj) {
-        fileObj.name = 'picture.png';
-        fileObj
-      },
-      onAfterInsert(err, fileObj) {
-        if err
-          alert 'Error'
-        else
-          alert 'Upload successful'
-      }
-    }   
-  }
-}
 ```

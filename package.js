@@ -11,7 +11,6 @@ Package.onUse(function(api) {
 
   api.use([
     'check',
-    'coffeescript',
     'underscore',
     'reactive-var',
     'templating',
@@ -20,8 +19,8 @@ Package.onUse(function(api) {
     'ostrio:files@1.5.6'
   ]);
 
-  api.addFiles('lib/client/autoform-file.html', 'client');
-  api.addFiles('lib/client/autoform-file.less', 'client');
-  api.addFiles('lib/client/autoform-file.coffee', 'client');
-  api.addFiles('lib/server/publish.coffee', 'server');
+  api.addFiles('lib/client/autoform.js', 'client');
+  api.addFiles('lib/client/fileUpload.html', 'client');
+  api.addFiles('lib/client/fileUpload.js', 'client');
+api.addFiles('lib/client/uploadImageDemo.html', 'client');
 });
