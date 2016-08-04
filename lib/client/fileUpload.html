@@ -1,20 +1,23 @@
 <template name="afFileUpload">
   <input value="{{fileId}}" type="hidden" {{this.atts}}>
-  {{#if $gt uploadedFile.count 0}}
-    {{#each uploadedFile}}
-      <div>
+  {{#with uploadedFile}}
+    <div>
+      {{#if isImage}}
         {{> uploadImageDemo}}
-      </div>
-      <a data-action="remove-file">Remove</a>
-    {{/each}}
+      {{else}}
+        {{> uploadFileDemo}}
+      {{/if}}
+    </div>
+    <a data-remove-file>Remove</a>
   {{else}}
-    {{#if currentUpload}}
-      {{#with currentUpload}}
-        Uploading <b>{{file.name}}</b>: 
-        <span class="progress">{{progress}}%</span>
-      {{/with}}
+    {{#with currentUpload}}
+      Uploading <b>{{file.name}}</b>:
+      <span class="progress">{{progress}}%</span>
     {{else}}
-      <input class="form-control af-file-upload-capture" type="file"/>
-    {{/if}}
-  {{/if}}
+      <input data-files-collection-upload class="form-control af-file-upload-capture" type="file" />
+      {{#if error}}
+        <span class="help-block">{{error}}</span>
+      {{/if}}
+    {{/with}}
+  {{/with}}
 </template>

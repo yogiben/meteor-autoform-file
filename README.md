@@ -2,12 +2,13 @@ Autoform File
 =============
 
 ### Description
-Upload and manage files with autoForm using ostrio:files.
-This was ported from yogiben:autoform-file to use ostiro:files instead of the now deprecated CollectionFS.
+Upload and manage files with autoForm via [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files). This package was ported from `yogiben:autoform-file` to use with [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files) instead of the already deprecated CollectionFS.
 
-### Quick Start
-##### 1. Install `meteor add ostrio:autoform-files`
-##### 2. Create your Files Collection (See [ostrio:files](https://github.com/VeliovGroup/Meteor-Files.git))
+### Quick Start:
+
+ - Install `meteor add ostrio:autoform-files`
+ - Install `meteor add ostrio:files`, *if not yet installed*
+ - Create your Files Collection (See [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files)))
 ```javascript
 var Images = new FilesCollection({
   collectionName: 'Images',
@@ -32,12 +33,12 @@ if (Meteor.isServer) {
   });
 }
 ```
-##### 3. Define your schema and set the `autoform` property like in the example below
+__Note:__ `Images` variable must be attached to *Global* scope. And has same name (*case-sensitive*) as `collectionName` option passed into `FilesCollectio#insert({collectionName: 'Images'})` method, `Images` in our case.
+
+ - Define your schema and set the `autoform` property like in the example below
 ```javascript
-Schemas = {}
-
-Posts = new Meteor.Collection('posts');
-
+Schemas = {};
+Posts   = new Meteor.Collection('posts');
 Schemas.Posts = new SimpleSchema({
   title: {
     type: String,
@@ -48,7 +49,7 @@ Schemas.Posts = new SimpleSchema({
     autoform: {
       afFieldInput: {
         type: 'fileUpload',
-        collection: 'Images',
+        collection: 'Images'
       }
     }
   }
@@ -57,17 +58,13 @@ Schemas.Posts = new SimpleSchema({
 Posts.attachSchema(Schemas.Posts);
 ```
 
-The `collection` property is the field name of your files collection.
+The `collection` property must be the same as name of your *FilesCollection* (*case-sensitive*), `Images` in our case.
 
-##### 4. Generate the form with `{{> quickform}}` or `{{#autoform}}`
+ - Generate the form with `{{> quickform}}` or `{{#autoform}}`
 e.g.:
-```
+```html
 {{> quickForm collection="Posts" type="insert"}}
-```
-
-or
-
-```
+<!-- OR -->
 {{#autoForm collection="Posts" type="insert"}}
   {{> afQuickField name="title"}}
   {{> afQuickField name="picture"}}
@@ -121,6 +118,6 @@ picture: {
 
 ```html
 <template name="myFilePreview">
-  <a href="{{file.url}}">{{file.original.name}}</a>
+  <a href="{{fileURL file}}">{{file.original.name}}</a>
 </template>
 ```

@@ -2,7 +2,7 @@ Package.describe({
   name: "ostrio:autoform-files",
   summary: "File upload for AutoForm using ostrio:files",
   description: "File upload for AutoForm using ostrio:files",
-  version: "1.0.0",
+  version: "1.0.1",
   git: "https://github.com/VeliovGroup/meteor-autoform-file.git"
 });
 
@@ -18,8 +18,11 @@ Package.onUse(function(api) {
     'ostrio:files@1.6.9'
   ]);
 
-  api.addFiles('lib/client/autoform.js', 'client');
-  api.addFiles('lib/client/fileUpload.html', 'client');
-  api.addFiles('lib/client/fileUpload.js', 'client');
-  api.addFiles('lib/client/uploadImageDemo.html', 'client');
+  api.addFiles([
+    'lib/client/autoform.js',
+    'lib/client/fileUpload.html',
+    'lib/client/fileUpload.js',
+    'lib/client/uploadImageDemo.html',
+    'lib/client/uploadFileDemo.html'
+  ], 'client');
 });
