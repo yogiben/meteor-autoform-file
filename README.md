@@ -8,7 +8,7 @@ Upload and manage files with autoForm via [`ostrio:files`](https://github.com/Ve
 
  - Install `meteor add ostrio:autoform-files`
  - Install `meteor add ostrio:files`, *if not yet installed*
- - Create your Files Collection (See [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files)))
+ - Create your Files Collection (See [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files))
 ```javascript
 var Images = new FilesCollection({
   collectionName: 'Images',
