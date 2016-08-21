@@ -8,11 +8,14 @@
         {{> uploadFileDemo}}
       {{/if}}
     </div>
-    <a data-remove-file>Remove</a>
+    <a data-reset-file href="#" style="display:none">Reset</a>
+    <a data-remove-file href="#">Remove</a>
   {{else}}
     {{#with currentUpload}}
       Uploading <b>{{file.name}}</b>:
-      <span class="progress">{{progress}}%</span>
+      <progress value="{{progress.get}}" max="100"></progress>
+      &nbsp;
+      <span class="progress">{{progress.get}}%</span>
     {{else}}
       <input data-files-collection-upload class="form-control af-file-upload-capture" type="file" />
     {{/with}}
