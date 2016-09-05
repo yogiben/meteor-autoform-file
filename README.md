@@ -49,7 +49,9 @@ Schemas.Posts = new SimpleSchema({
     autoform: {
       afFieldInput: {
         type: 'fileUpload',
-        collection: 'Images'
+        collection: 'Images',
+        uploadTemplate: 'uploadField' // <- Optional
+        previewTemplate: 'uploadPreview' // <- Optional
       }
     }
   }
@@ -96,12 +98,11 @@ Schemas.Posts = new SimpleSchema({
 })
 ```
 
-### Custom file preview /// need to work on this
+### Custom file preview
 
 Your custom file preview template data context will be:
 
-- *file* - FS.File instance
-- *atts* - autoform atts
+- *file* - fileObj instance
 
 ```javascript
 picture: {
@@ -111,6 +112,28 @@ picture: {
       type: 'fileUpload',
       collection: 'Images',
       previewTemplate: 'myFilePreview'
+    }
+  }
+}
+```
+
+### Custom upload template
+
+Your custom file upload template data context will be:
+
+- *file* - FS.File instance
+- *progress*
+- *status*
+- Other fields from [`FileUpload` instance](https://github.com/VeliovGroup/Meteor-Files/wiki/Insert-(Upload)#fileupload-methods-and-properties)
+
+```javascript
+picture: {
+  type: String,
+  autoform: {
+    afFieldInput: {
+      type: 'fileUpload',
+      collection: 'Images',
+      uploadTemplate: 'myFileUpload'
     }
   }
 }

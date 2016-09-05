@@ -1,23 +1,31 @@
 <template name="afFileUpload">
   <input value="{{fileId}}" type="hidden" {{this.atts}}>
   {{#with uploadedFile}}
-    <div>
-      {{#if isImage}}
-        {{> uploadImageDemo}}
-      {{else}}
-        {{> uploadFileDemo}}
-      {{/if}}
-    </div>
-    <a data-reset-file href="#" style="display:none">Reset</a>
-    <a data-remove-file href="#">Remove</a>
-  {{else}}
-    {{#with currentUpload}}
-      Uploading <b>{{file.name}}</b>:
-      <progress value="{{progress.get}}" max="100"></progress>
-      &nbsp;
-      <span class="progress">{{progress.get}}%</span>
+    {{#if previewTemplate}}
+      {{>Template.dynamic template=previewTemplate}}
     {{else}}
-      <input data-files-collection-upload class="form-control af-file-upload-capture" type="file" />
-    {{/with}}
+      <div>
+        {{#if isImage}}
+          {{> uploadImageDemo}}
+        {{else}}
+          {{> uploadFileDemo}}
+        {{/if}}
+      </div>
+      <a data-reset-file href="#" style="display:none">Reset</a>
+      <a data-remove-file href="#">Remove</a>
+    {{/if}}
+  {{else}}
+    {{#if uploadTemplate}}
+      {{>Template.dynamic template=uploadTemplate data=currentUpload}}
+    {{else}}
+      {{#with currentUpload}}
+        Uploading <b>{{file.name}}</b>:
+        <progress value="{{progress.get}}" max="100"></progress>
+        &nbsp;
+        <span class="progress">{{progress.get}}%</span>
+      {{else}}
+        <input data-files-collection-upload class="form-control af-file-upload-capture" type="file" />
+      {{/with}}
+    {{/if}}
   {{/with}}
 </template>
