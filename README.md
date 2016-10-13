@@ -141,6 +141,6 @@ picture: {
 
 ```html
 <template name="myFilePreview">
-  <a href="{{fileURL file}}">{{file.original.name}}</a>
+  <a href="{{file.link}}">{{file.original.name}}</a>
 </template>
 ```
