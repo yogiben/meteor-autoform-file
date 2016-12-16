@@ -12,7 +12,7 @@ Upload and manage files with autoForm via [`ostrio:files`](https://github.com/Ve
 ```javascript
 var Images = new FilesCollection({
   collectionName: 'Images',
-  allowClientCode: false, // Disallow remove files from Client,
+  allowClientCode: true, // Required to let you remove uploaded file
   onBeforeUpload: function (file) {
     // Allow upload files under 10MB, and only in png/jpg/jpeg formats
     if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.ext)) {
@@ -80,18 +80,20 @@ Generate the form with `{{> quickform}}` or `{{#autoform}}` e.g.:
 
 ```html
 {{#if Template.subscriptionsReady }}
- {{> quickForm collection="Posts" type="update" doc=getPost}}
+  {{> quickForm collection="Posts" type="update" doc=getPost}}
 {{/if}}
 <!-- OR -->
 {{#if Template.subscriptionsReady }}
- {{#autoForm collection="Posts" type="update" doc=getPost}}
-   {{> afQuickField name="title"}}
-   {{> afQuickField name="picture"}}
-   <button type="submit" class="btn btn-primary">Update</button>
- {{/autoForm}}
+  {{#autoForm collection="Posts" type="update" doc=getPost}}
+    {{> afQuickField name="title"}}
+    {{> afQuickField name="picture"}}
+    <button type="submit" class="btn btn-primary">Update</button>
+  {{/autoForm}}
 {{/if}}
 ```
-Autoform should be wrapped in **{{#if Template.subscriptionsReady }}** which makes sure that template level subscription is ready. Without it the picture preview won't be shown. You can see update mode example [here](https://github.com/VeliovGroup/meteor-autoform-file/issues/9).
+
+Autoform should be wrapped in `{{#if Template.subscriptionsReady }}` which makes sure that template level subscription is ready. Without it the picture preview won't be shown. You can see update mode example [here](https://github.com/VeliovGroup/meteor-autoform-file/issues/9).
+
 ### Multiple images //does not support yet
 If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
 
