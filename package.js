@@ -2,7 +2,7 @@ Package.describe({
   name: 'ostrio:autoform-files',
   summary: 'File upload for AutoForm using ostrio:files',
   description: 'File upload for AutoForm using ostrio:files',
-  version: '1.0.12',
+  version: '2.0.0',
   git: 'https://github.com/VeliovGroup/meteor-autoform-file.git'
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'underscore',
     'reactive-var',
     'templating',
-    'aldeed:autoform@5.8.1',
+    'aldeed:autoform@6.0.0',
     'ostrio:files@1.7.11'
   ]);
 
