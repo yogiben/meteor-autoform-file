@@ -8,6 +8,17 @@ Upload and manage files with autoForm via [`ostrio:files`](https://github.com/Ve
 
  - Install `meteor add ostrio:autoform-files`
  - Install `meteor add ostrio:files`, *if not yet installed*
+ - Add this config to `simpl-schema` NPM package (depending of the language that you are using):
+```javascript
+SimpleSchema.setDefaultMessages({
+  initialLanguage: 'en',
+  messages: {
+    en: {
+      uploadError: '{{value}}', //File-upload
+    },
+  }
+});
+```
  - Create your Files Collection (See [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files))
 ```javascript
 var Images = new FilesCollection({
