@@ -11,11 +11,12 @@ Package.onUse(function(api) {
 
   api.use([
     'check',
+    'ecmascript',
     'underscore',
     'reactive-var',
     'templating',
-    'aldeed:autoform@6.0.0',
-    'ostrio:files@1.7.11'
+    'aldeed:autoform@6.2.0',
+    'ostrio:files@1.8.1'
   ]);
 
   api.addFiles([
