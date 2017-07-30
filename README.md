@@ -34,6 +34,10 @@ var Images = new FilesCollection({
   }
 })
 
+// if you want to make use of dburles:mongo-collection-instances
+// you need to create a 'parent' reference to the underlying collection
+Images.collection.filesCollection = Images;
+
 if (Meteor.isClient) {
   Meteor.subscribe('files.images.all');
 }
@@ -44,7 +48,8 @@ if (Meteor.isServer) {
   });
 }
 ```
-__Note:__ `Images` variable must be attached to *Global* scope. And has same name (*case-sensitive*) as `collectionName` option passed into `FilesCollectio#insert({collectionName: 'Images'})` method, `Images` in our case.
+__Note:__ If you don't use Mongo Collection instances, then the `Images` variable must be attached to *Global* scope. And has same name (*case-sensitive*) as `collectionName` option passed into `FilesCollection#insert({collectionName: 'Images'})` method, `Images` in our case.
+
 
  - Define your schema and set the `autoform` property like in the example below
 ```javascript
