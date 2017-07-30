@@ -21,10 +21,10 @@ SimpleSchema.setDefaultMessages({
 ```
  - Create your Files Collection (See [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files))
 ```javascript
-var Images = new FilesCollection({
+const Images = new FilesCollection({
   collectionName: 'Images',
   allowClientCode: true, // Required to let you remove uploaded file
-  onBeforeUpload: function (file) {
+  onBeforeUpload(file) {
     // Allow upload files under 10MB, and only in png/jpg/jpeg formats
     if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.ext)) {
       return true;
@@ -32,23 +32,24 @@ var Images = new FilesCollection({
       return 'Please upload image, with size equal or less than 10MB';
     }
   }
-})
-
-// if you want to make use of dburles:mongo-collection-instances
-// you need to create a 'parent' reference to the underlying collection
-Images.collection.filesCollection = Images;
+});
 
 if (Meteor.isClient) {
   Meteor.subscribe('files.images.all');
 }
 
 if (Meteor.isServer) {
-  Meteor.publish('files.images.all', function () {
+  Meteor.publish('files.images.all', () => {
     return Images.collection.find({});
   });
 }
 ```
-__Note:__ If you don't use Mongo Collection instances, then the `Images` variable must be attached to *Global* scope. And has same name (*case-sensitive*) as `collectionName` option passed into `FilesCollection#insert({collectionName: 'Images'})` method, `Images` in our case.
+__Note:__ If you don't use Mongo Collection instances (`dburles:mongo-collection-instances`), then the `Images` variable must be attached to *Global* scope. And has same name (*case-sensitive*) as `collectionName` option passed into `FilesCollection#insert({collectionName: 'Images'})` method, `Images` in our case.
+
+To start using `dburles:mongo-collection-instances` simply install it:
+```shell
+meteor add dburles:mongo-collection-instances
+```
 
 
  - Define your schema and set the `autoform` property like in the example below

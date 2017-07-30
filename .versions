@@ -41,9 +41,9 @@ mongo-id@1.0.6
 npm-mongo@2.2.30
 observe-sequence@1.0.16
 ordered-dict@1.0.9
-ostrio:autoform-files@2.0.1
+ostrio:autoform-files@2.0.2
 ostrio:cookies@2.2.2
-ostrio:files@1.8.1
+ostrio:files@1.8.2
 promise@0.8.9
 random@1.0.10
 reactive-dict@1.1.9
