@@ -67,7 +67,7 @@ Schemas.Posts = new SimpleSchema({
       afFieldInput: {
         type: 'fileUpload',
         collection: 'Images',
-        uploadTemplate: 'uploadField' // <- Optional
+        uploadTemplate: 'uploadField', // <- Optional
         previewTemplate: 'uploadPreview' // <- Optional
       }
     }
@@ -84,9 +84,9 @@ Generate the form with `{{> quickform}}` or `{{#autoform}}` e.g.:
 ##### Insert mode:
 
 ```html
-{{> quickForm collection="Posts" type="insert"}}
+{{> quickForm id="postsInsertForm" collection="Posts" type="insert"}}
 <!-- OR -->
-{{#autoForm collection="Posts" type="insert"}}
+{{#autoForm id="postsInsertForm" collection="Posts" type="insert"}}
   {{> afQuickField name="title"}}
   {{> afQuickField name="picture"}}
   <button type="submit" class="btn btn-primary">Insert</button>
@@ -97,11 +97,11 @@ Generate the form with `{{> quickform}}` or `{{#autoform}}` e.g.:
 
 ```html
 {{#if Template.subscriptionsReady }}
-  {{> quickForm collection="Posts" type="update" doc=getPost}}
+  {{> quickForm id="postsUpdateForm" collection="Posts" type="update" doc=getPost}}
 {{/if}}
 <!-- OR -->
 {{#if Template.subscriptionsReady }}
-  {{#autoForm collection="Posts" type="update" doc=getPost}}
+  {{#autoForm id="postsUpdateForm" collection="Posts" type="update" doc=getPost}}
     {{> afQuickField name="title"}}
     {{> afQuickField name="picture"}}
     <button type="submit" class="btn btn-primary">Update</button>
