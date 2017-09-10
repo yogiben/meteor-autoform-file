@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'reactive-var',
     'templating',
     'aldeed:autoform@6.2.0',
-    'ostrio:files@1.8.2'
+    'ostrio:files@1.8.3'
   ]);
 
   api.addFiles([
