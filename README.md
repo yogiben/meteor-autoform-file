@@ -68,7 +68,15 @@ Schemas.Posts = new SimpleSchema({
         type: 'fileUpload',
         collection: 'Images',
         uploadTemplate: 'uploadField', // <- Optional
-        previewTemplate: 'uploadPreview' // <- Optional
+        previewTemplate: 'uploadPreview', // <- Optional
+        insertConfig: { // <- Optional, .insert() method options, see: https://github.com/VeliovGroup/Meteor-Files/wiki/Insert-(Upload)
+          meta: {},
+          isBase64: false,
+          transport: 'ddp',
+          streams: 'dynamic',
+          chunkSize: 'dynamic',
+          allowWebWorkers: true
+        }
       }
     }
   }
@@ -89,6 +97,14 @@ Generate the form with `{{> quickform}}` or `{{#autoform}}` e.g.:
 {{#autoForm id="postsInsertForm" collection="Posts" type="insert"}}
   {{> afQuickField name="title"}}
   {{> afQuickField name="picture"}}
+  <button type="submit" class="btn btn-primary">Insert</button>
+{{/autoForm}}
+
+<!-- OR with .insert() method options -->
+<!-- See: https://github.com/VeliovGroup/Meteor-Files/wiki/Insert-(Upload) -->
+{{#autoForm id="postsInsertForm" collection="Posts" type="insert"}}
+  {{> afQuickField name="title"}}
+  {{> afQuickField name="picture" transport="http" allowWebWorkers="false"}}
   <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
@@ -181,3 +197,9 @@ picture: {
   <a href="{{file.link}}">{{file.original.name}}</a>
 </template>
 ```
+
+Support this project:
+======
+This project wouldn't be possible without [ostr.io](https://ostr.io).
+
+Using [ostr.io](https://ostr.io) you are not only [protecting domain names](https://ostr.io/info/domain-names-protection), [monitoring websites and servers](https://ostr.io/info/monitoring), using [Prerendering for better SEO](https://ostr.io/info/prerendering) of your JavaScript website, but support our Open Source activity, and great packages like this one could be available for free.
