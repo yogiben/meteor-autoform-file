@@ -138,7 +138,7 @@ Schemas.Posts = new SimpleSchema({
   },
   pictures: {
     type: Array,
-    label: 'Choose file' # optional
+    label: 'Choose file' // <- Optional
   },
   "pictures.$": {
     type: String,
