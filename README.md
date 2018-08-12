@@ -1,217 +1,206 @@
 Autoform File
 =============
 
-### Description ###
-Upload and manage files with autoForm.
+### Description
+Upload and manage files with autoForm via [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files). This package was ported from `yogiben:autoform-file` to use with [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files) instead of the already deprecated CollectionFS.
 
-![Meteor autoform file](https://raw.githubusercontent.com/yogiben/meteor-autoform-file/master/readme/1.png)
+### Quick Start:
 
-Maintained by [Meteor Factory](https://meteorfactory.io). Professional Meteor development.
-
-[![Meteor autoform file](https://raw.githubusercontent.com/yogiben/meteor-autoform-file/master/readme/meteor-factory.jpg)](http://meteorfactory.io)
-
-### Quick Start ###
-1) Install `meteor add yogiben:autoform-file`
-
-2) Create your collectionFS (See [collectionFS](https://github.com/CollectionFS/Meteor-CollectionFS))
-```coffeescript
-@Images = new FS.Collection("images",
-  stores: [new FS.Store.GridFS("images", {})]
-)
+ - Install `meteor add ostrio:autoform-files`
+ - Install `meteor add ostrio:files`, *if not yet installed*
+ - Add this config to `simpl-schema` NPM package (depending of the language that you are using):
+```javascript
+SimpleSchema.setDefaultMessages({
+  initialLanguage: 'en',
+  messages: {
+    en: {
+      uploadError: '{{value}}', //File-upload
+    },
+  }
+});
 ```
-3) Make sure the correct allow rules & subscriptions are set up on the collectionFS
-```coffeescript
-Images.allow
-  insert: (userId, doc) ->
-    true
-  download: (userId)->
-    true
-```
-and
-```coffeescript
-Meteor.publish 'images', ->
-  Images.find()
-```
-and in your router.coffee
-```coffeescript
-  @route "profile",
-    waitOn: ->
-      [
-        Meteor.subscribe 'images'
-      ]
-```
-4) Define your schema and set the `autoform` property like in the example below
-```coffeescript
-Schemas = {}
+ - Create your Files Collection (See [`ostrio:files`](https://github.com/VeliovGroup/Meteor-Files))
+```javascript
+const Images = new FilesCollection({
+  collectionName: 'Images',
+  allowClientCode: true, // Required to let you remove uploaded file
+  onBeforeUpload(file) {
+    // Allow upload files under 10MB, and only in png/jpg/jpeg formats
+    if (file.size <= 10485760 && /png|jpg|jpeg/i.test(file.ext)) {
+      return true;
+    } else {
+      return 'Please upload image, with size equal or less than 10MB';
+    }
+  }
+});
 
-@Posts = new Meteor.Collection('posts');
+if (Meteor.isClient) {
+  Meteor.subscribe('files.images.all');
+}
 
-Schemas.Posts = new SimpleSchema
-  title:
-    type: String
+if (Meteor.isServer) {
+  Meteor.publish('files.images.all', () => {
+    return Images.collection.find({});
+  });
+}
+```
+__Note:__ If you don't use Mongo Collection instances (`dburles:mongo-collection-instances`), then the `Images` variable must be attached to *Global* scope. And has same name (*case-sensitive*) as `collectionName` option passed into `FilesCollection#insert({collectionName: 'Images'})` method, `Images` in our case.
+
+To start using `dburles:mongo-collection-instances` simply install it:
+```shell
+meteor add dburles:mongo-collection-instances
+```
+
+
+ - Define your schema and set the `autoform` property like in the example below
+```javascript
+Schemas = {};
+Posts   = new Meteor.Collection('posts');
+Schemas.Posts = new SimpleSchema({
+  title: {
+    type: String,
     max: 60
+  },
+  picture: {
+    type: String,
+    autoform: {
+      afFieldInput: {
+        type: 'fileUpload',
+        collection: 'Images',
+        uploadTemplate: 'uploadField', // <- Optional
+        previewTemplate: 'uploadPreview', // <- Optional
+        insertConfig: { // <- Optional, .insert() method options, see: https://github.com/VeliovGroup/Meteor-Files/wiki/Insert-(Upload)
+          meta: {},
+          isBase64: false,
+          transport: 'ddp',
+          streams: 'dynamic',
+          chunkSize: 'dynamic',
+          allowWebWorkers: true
+        }
+      }
+    }
+  }
+});
 
-  picture:
-    type: String
-    autoform:
-      afFieldInput:
-        type: 'fileUpload'
-        collection: 'Images'
-        label: 'Choose file' # optional
-
-Posts.attachSchema(Schemas.Posts)
+Posts.attachSchema(Schemas.Posts);
 ```
 
-The `collection` property is the field name of your collectionFS.
+The `collection` property must be the same as name of your *FilesCollection* (*case-sensitive*), `Images` in our case.
 
-5) Generate the form with `{{> quickform}}` or `{{#autoform}}`
+Generate the form with `{{> quickform}}` or `{{#autoform}}` e.g.:
 
-e.g.
-```
-{{> quickForm collection="Posts" type="insert"}}
-```
+##### Insert mode:
 
-or
+```html
+{{> quickForm id="postsInsertForm" collection="Posts" type="insert"}}
+<!-- OR -->
+{{#autoForm id="postsInsertForm" collection="Posts" type="insert"}}
+  {{> afQuickField name="title"}}
+  {{> afQuickField name="picture"}}
+  <button type="submit" class="btn btn-primary">Insert</button>
+{{/autoForm}}
 
-```
-{{#autoForm collection="Posts" type="insert"}}
-{{> afQuickField name="title"}}
-{{> afQuickField name="picture"}}
-<button type="submit" class="btn btn-primary">Insert</button>
+<!-- OR with .insert() method options -->
+<!-- See: https://github.com/VeliovGroup/Meteor-Files/wiki/Insert-(Upload) -->
+{{#autoForm id="postsInsertForm" collection="Posts" type="insert"}}
+  {{> afQuickField name="title"}}
+  {{> afQuickField name="picture" transport="http" allowWebWorkers="false"}}
+  <button type="submit" class="btn btn-primary">Insert</button>
 {{/autoForm}}
 ```
 
-###Multiple images###
+##### Update mode:
+
+```html
+{{#if Template.subscriptionsReady }}
+  {{> quickForm id="postsUpdateForm" collection="Posts" type="update" doc=getPost}}
+{{/if}}
+<!-- OR -->
+{{#if Template.subscriptionsReady }}
+  {{#autoForm id="postsUpdateForm" collection="Posts" type="update" doc=getPost}}
+    {{> afQuickField name="title"}}
+    {{> afQuickField name="picture"}}
+    <button type="submit" class="btn btn-primary">Update</button>
+  {{/autoForm}}
+{{/if}}
+```
+
+Autoform should be wrapped in `{{#if Template.subscriptionsReady }}` which makes sure that template level subscription is ready. Without it the picture preview won't be shown. You can see update mode example [here](https://github.com/VeliovGroup/meteor-autoform-file/issues/9).
+
+### Multiple images // not fully supported yet
 If you want to use an array of images inside you have to define the autoform on on the [schema key](https://github.com/aldeed/meteor-simple-schema#schema-keys)
 
-```coffeescript
-Schemas.Posts = new SimpleSchema
-  title:
-    type: String
+```javascript
+Schemas.Posts = new SimpleSchema({
+  title: {
+    type: String,
     max: 60
-
-  pictures:
-    type: [String]
-    label: 'Choose file' # optional
-
-  "pictures.$":
-    autoform:
-      afFieldInput:
+  },
+  pictures: {
+    type: Array,
+    label: 'Choose file' // <- Optional
+  },
+  "pictures.$": {
+    type: String,
+    autoform: {
+      afFieldInput: {
         type: 'fileUpload',
         collection: 'Images'
+      }
+    }
+  }
+})
 ```
 
-###Security & optimization###
-The above example is just a starting point. You should set your own custom `allow` rules and optimize your subscriptions.
-
-### Customization ###
-You can customize the button / remove text.
-
-Defaults:
-```
-{{> afFieldInput name="picture" label="Choose file" remove-label="Remove"}}
-```
-
-Also it is possible to customize accept attribute
-
-add it in your schema definition:
-```coffeescript
-picture:
-  type: String
-  autoform:
-    afFieldInput:
-      type: 'fileUpload'
-      collection: 'Images'
-      accept: 'image/*'
-      label: 'Choose file' # optional
-
-```
-
-### Upload progress bar ###
-
-By default `FS.UploadProgressTemplate` from [cfs:ui](https://github.com/CollectionFS/Meteor-cfs-ui) package is used to display upload progress. You can specify your own template with `uploadProgressTemplate` option, e.g.
-
-```coffeescript
-picture:
-  type: String
-  autoform:
-    afFieldInput:
-      type: 'fileUpload'
-      collection: 'Images'
-      uploadProgressTemplate: 'myUploadProgressTemplate'
-```
-
-### Custom file preview ###
+### Custom file preview
 
 Your custom file preview template data context will be:
 
-- *file* - FS.File instance
-- *atts* - autoform atts
+- *file* - fileObj instance
 
-```coffeescript
-picture:
-  type: String
-  autoform:
-    afFieldInput:
-      type: 'fileUpload'
-      collection: 'Images'
+```javascript
+picture: {
+  type: String,
+  autoform: {
+    afFieldInput: {
+      type: 'fileUpload',
+      collection: 'Images',
       previewTemplate: 'myFilePreview'
+    }
+  }
+}
+```
+
+### Custom upload template
+
+Your custom file upload template data context will be:
+
+- *file* - FS.File instance
+- *progress*
+- *status*
+- Other fields from [`FileUpload` instance](https://github.com/VeliovGroup/Meteor-Files/wiki/Insert-(Upload)#fileupload-methods-and-properties)
+
+```javascript
+picture: {
+  type: String,
+  autoform: {
+    afFieldInput: {
+      type: 'fileUpload',
+      collection: 'Images',
+      uploadTemplate: 'myFileUpload'
+    }
+  }
+}
 ```
 
 ```html
 <template name="myFilePreview">
-  <a href="{{file.url}}">{{file.original.name}}</a>
+  <a href="{{file.link}}">{{file.original.name}}</a>
 </template>
 ```
 
-### Custom select/remove file buttons ###
+Support this project:
+======
+This project wouldn't be possible without [ostr.io](https://ostr.io).
 
-Remember to add `js-af-select-file` and `js-af-remove-file` classes to nodes which should fire an event on click.
-
-```coffeescript
-picture:
-  type: String
-  autoform:
-    afFieldInput:
-      type: 'fileUpload'
-      collection: 'Images'
-      selectFileBtnTemplate: 'mySelectFileBtn'
-      removeFileBtnTemplate: 'myRemoveFileBtn'
-```
-
-```html
-<template name="mySelectFileBtn">
-  <button type="button" class="js-af-select-file">Upload file</button>
-</template>
-
-<template name="myRemoveFileBtn">
-  <button type="button" class="js-af-remove-file">Remove</button>
-</template>
-```
-
-### Callbacks ###
-
-**onBeforeInsert** - can be used to modify file (remember to return fileObj)
-
-**onAfterInsert** - called after insert with two arguments: error object and file object
-
-Please note that callback properties are functions that return callbacks. This is because autoform evaluates function attributes first.
-
-```coffeescript
-picture:
-  type: String
-  autoform:
-    afFieldInput:
-      type: 'fileUpload'
-      collection: 'Images'
-      onBeforeInsert: ->
-        (fileObj) ->
-          fileObj.name 'picture.png'
-          fileObj
-      onAfterInsert: ->
-        (err, fileObj) ->
-          if err
-            alert 'Error'
-          else
-            alert 'Upload successful'
-```
+Using [ostr.io](https://ostr.io) you are not only [protecting domain names](https://ostr.io/info/domain-names-protection), [monitoring websites and servers](https://ostr.io/info/monitoring), using [Prerendering for better SEO](https://ostr.io/info/prerendering) of your JavaScript website, but support our Open Source activity, and great packages like this one could be available for free.
